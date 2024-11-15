@@ -66,7 +66,7 @@ const ContactsGroup = () => {
 				/>
 			)}
 
-			<div className={`${style.listsContainer} ${order == "descending" ? "reverse" : null}`}>
+			<div className={`${style.listsContainer} ${order == "descending" ? style.reverse : null}`}>
 				{alphabet.map(
 					(letter, i) =>
 						filteredContacts[letter].length > 0 && (
