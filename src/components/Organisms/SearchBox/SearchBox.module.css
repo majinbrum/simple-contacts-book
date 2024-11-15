@@ -1,0 +1,15 @@
+.searchBox {
+	background-color: var(--light);
+	border-radius: var(--border-radius);
+	padding: var(--space-sm);
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-sm);
+}
+
+.selectBox {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: var(--space-sm);
+}

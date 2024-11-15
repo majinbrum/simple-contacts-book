@@ -1,0 +1,29 @@
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: end;
+
+	margin-bottom: var(--space-md);
+}
+
+.navLinks {
+	display: flex;
+	gap: var(--space-md);
+}
+
+.headerButton {
+	width: 40px;
+	height: 40px;
+	padding: var(--space-sm);
+	border-radius: 50%;
+	background-color: var(--light);
+	fill: var(--accent);
+}
+
+.headerButton:active {
+	box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+}
+
+.headerButton:focus-visible {
+	outline: 2px solid var(--accent);
+}

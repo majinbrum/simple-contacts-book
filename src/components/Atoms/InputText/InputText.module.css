@@ -1,0 +1,36 @@
+.inputTextLabel {
+	display: flex;
+	align-items: center;
+	padding-left: var(--space-sm);
+	gap: var(--space-xs);
+	background-color: var(--white);
+	border-radius: var(--border-radius);
+}
+
+.inputTextLabel svg {
+	fill: var(--accent);
+	height: 20px;
+}
+
+.inputText {
+	width: 100%;
+	border: none;
+	border-bottom-right-radius: var(--border-radius);
+	border-top-right-radius: var(--border-radius);
+	padding: var(--space-xs);
+	font-size: var(--font-size-md);
+	font-weight: var(--font-weight-light);
+}
+
+.inputText:focus-visible {
+	outline: none;
+}
+
+.inputTextLabel:focus-within {
+	outline: 2px solid var(--accent);
+}
+
+.inputText::selection {
+	background-color: var(--accent);
+	color: var(--white);
+}

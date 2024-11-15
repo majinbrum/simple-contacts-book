@@ -1,0 +1,28 @@
+@keyframes loader2 {
+	0% {
+		-webkit-transform: rotate(0);
+		transform: rotate(0);
+	}
+	to {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+.loaderOverlay {
+	background-color: var(--light);
+	opacity: 0.6;
+	position: fixed;
+	inset: 0;
+}
+
+.loaderIcon svg {
+	/* box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px; */
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	animation: loader2 1s cubic-bezier(0.63, -0.71, 0.32, 1.28) infinite both;
+	transform-origin: center center;
+}

@@ -1,0 +1,72 @@
+.favouriteContactCard,
+.contactCard {
+	background-color: var(--light);
+	display: flex;
+	justify-content: space-between;
+	border-radius: var(--border-radius);
+}
+
+.favouriteContactCard {
+	height: 100%;
+	flex-direction: column;
+	gap: var(--space-sm);
+	padding: var(--space-md) 0 0 var(--space-md);
+
+	overflow: hidden;
+}
+
+.favouriteContactCard:hover {
+	background-color: var(--white);
+}
+
+.favouriteContactCard span:first-child,
+.contactCard span:first-child {
+	font-weight: var(--font-weight-light);
+}
+
+.favouriteContactCard .contactName span:last-child,
+.contactCard .contactName span:last-child {
+	font-weight: var(--font-weight-medium);
+}
+
+.favouriteContactCard .contactName {
+	padding-right: var(--space-md);
+}
+
+.favouriteContactCard .contactName span:first-child {
+	display: block;
+}
+
+.favouriteContactCard .contactAvatar {
+	height: 120px;
+	width: 105%;
+	text-align: right;
+}
+
+@media (min-width: 576px) {
+	.favouriteContactCard .contactAvatar {
+		width: 100%;
+	}
+}
+
+.favouriteContactCard .contactAvatar img {
+	height: 100%;
+	width: auto;
+
+	object-fit: cover;
+}
+
+.contactCard {
+	align-items: center;
+	padding: var(--space-sm);
+}
+
+.contactCard .contactAvatar {
+	height: 40px;
+}
+
+.contactCard .contactAvatar img {
+	height: 100%;
+	width: auto;
+	object-fit: contain;
+}
