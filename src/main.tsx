@@ -10,6 +10,8 @@ import OrderProvider from "./providers/OrderContext.tsx";
 import FilterProvider from "./providers/FilterContext.tsx";
 import ContactsGroup from "./components/Pages/ContactsGroup/ContactsGroup.tsx";
 import ContactsProvider from "./providers/ContactsContext.tsx";
+import GroupsProvider from "./providers/GroupsContext.tsx";
+import Group from "./components/Pages/Group/Group.tsx";
 
 const router = createBrowserRouter([
 	{
@@ -21,15 +23,27 @@ const router = createBrowserRouter([
 				element: <App />,
 			},
 			{
-				path: "add",
-				element: <Contact />,
+				path: "groups/edit",
+				element: <App />,
 			},
 			{
 				path: "contacts/:group",
 				element: <ContactsGroup />,
 			},
 			{
+				path: "groups/add",
+				element: <Group />,
+			},
+			{
+				path: "groups/edit/:id",
+				element: <Group />,
+			},
+			{
 				path: "contacts/:group/:id",
+				element: <Contact />,
+			},
+			{
+				path: "contacts/add",
 				element: <Contact />,
 			},
 		],
@@ -42,9 +56,11 @@ createRoot(document.getElementById("root")!).render(
 		<FilterProvider>
 			<SortByProvider>
 				<OrderProvider>
-					<ContactsProvider>
-						<RouterProvider router={router} />
-					</ContactsProvider>
+					<GroupsProvider>
+						<ContactsProvider>
+							<RouterProvider router={router} />
+						</ContactsProvider>
+					</GroupsProvider>
 				</OrderProvider>
 			</SortByProvider>
 		</FilterProvider>

@@ -11,6 +11,26 @@
 	gap: var(--space-md);
 }
 
+.contactsListHeader {
+	display: flex;
+	justify-content: space-between;
+	gap: var(--space-sm);
+}
+
+.contactsListHeader button {
+	cursor: pointer;
+	border: none;
+	background-color: transparent;
+	padding-right: var(--space-sm);
+}
+
+.contactsListHeader button svg {
+	margin-right: var(--space-xs);
+	width: 20px;
+	height: 20px;
+	fill: var(--accent);
+}
+
 @media (min-width: 768px) {
 	.contactsFavouriteGrid.oneItem {
 		grid-template-columns: 250px;

@@ -11,5 +11,5 @@ import { Database } from "../../supabase/database.types";
 // tag: string
 // }
 
-export type IContact = Database["public"]["Tables"]["contacts"]["Row"];
-export type IContactsGroup = Database["public"]["Tables"]["contacts"]["Row"]["tag"];
+export type IContact = Database["public"]["Tables"]["contacts_duplicate"]["Row"];
+export type IGroup = Database["public"]["Tables"]["groups"]["Row"];
