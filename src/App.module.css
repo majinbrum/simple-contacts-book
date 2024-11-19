@@ -20,7 +20,6 @@
 	gap: var(--space-sm);
 	padding: var(--space-md);
 	font-weight: var(--font-weight-medium);
-	text-transform: capitalize;
 }
 
 .homeLink:focus,

@@ -1,37 +1,20 @@
 import style from "./App.module.css";
 import { useEffect, useState } from "react";
-import { readGroups } from "../supabase/groupsFunctions";
-import Loader from "./components/Atoms/Loader/Loader";
 import { Link, useLocation } from "react-router-dom";
 import { supabaseUrl } from "../supabase/supabaseClient";
-import { useGroupsContext, useSetGroupsContext } from "./providers/GroupsContext";
+import { useGroupsContext } from "./providers/GroupsContext";
 import { AddIcon } from "./assets/icons";
 
 const App = () => {
 	const path = useLocation();
 	const currentPathArray = path.pathname.split("/");
 	const currentPathLast = currentPathArray[currentPathArray.length - 1];
-	const setGroups = useSetGroupsContext();
 	const groups = useGroupsContext();
-
 	const [editMode, setEditMode] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
-
-	const getGroups = async () => {
-		setIsLoading(true);
-		setGroups(await readGroups());
-		setIsLoading(false);
-	};
-
-	useEffect(() => {
-		getGroups();
-	}, []);
 
 	useEffect(() => {
 		setEditMode(currentPathLast == "edit" ? true : false);
 	}, [path]);
-
-	if (isLoading) return <Loader />;
 
 	return (
 		<>
@@ -47,7 +30,7 @@ const App = () => {
 								loading='lazy'
 							/>
 						</div>
-						all
+						All
 					</Link>
 				)}
 				{groups.map((group, i) => (
@@ -65,12 +48,14 @@ const App = () => {
 						{group.tag}
 					</Link>
 				))}
-				<Link
-					to={"groups/add"}
-					className={style.homeLink}>
-					<div className={style.homeLinkIcon}>{AddIcon}</div>
-					Add group
-				</Link>
+				{!editMode && (
+					<Link
+						to={"groups/add"}
+						className={style.homeLink}>
+						<div className={style.homeLinkIcon}>{AddIcon}</div>
+						Add group
+					</Link>
+				)}
 			</div>
 		</>
 	);

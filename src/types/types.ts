@@ -11,11 +11,13 @@ export interface IValuesObject {
 }
 
 export interface InputSelectProps {
-	label: string;
+	label?: string;
 	name: string;
-	valuesObject: IValuesObject;
+	valuesObject?: IValuesObject;
+	valuesGroups?: IGroup[];
 	value: string;
 	setValue: Dispatch<SetStateAction<string>>;
+	disabled?: boolean;
 }
 
 export interface InputTextProps {
