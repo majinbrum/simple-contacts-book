@@ -8,6 +8,14 @@
 	border: none;
 	outline: 2px solid var(--light);
 }
+
+.selectTrigger:disabled {
+	color: var(--black);
+}
+.selectTrigger:disabled .selectIcon svg {
+	fill: var(--accentLowOpacity);
+}
+
 .selectTrigger:hover:not(:disabled) {
 	outline: 2px solid var(--accent);
 }

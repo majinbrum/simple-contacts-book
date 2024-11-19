@@ -11,14 +11,14 @@ import { supabaseUrl } from "../../../../supabase/supabaseClient";
 import ContactCard from "../../Atoms/ContactCard/ContactCard";
 import Loader from "../../Atoms/Loader/Loader";
 import { generateRandomAvatar } from "../../../../supabase/functions";
-import { FilledStarIcon, RepeatIcon, StarIcon } from "../../../assets/icons";
+import { CopyIcon, EnvelopeIcon, FilledStarIcon, RepeatIcon, StarIcon } from "../../../assets/icons";
 import InputSelect from "../../Atoms/InputSelect/InputSelect";
 import { useGroupsContext } from "../../../providers/GroupsContext";
 
 function ContactDetailsForm(props: ContactDetailsProps) {
-	const { contact } = props;
-	const navigate = useNavigate();
 	const groups = useGroupsContext();
+	const navigate = useNavigate();
+	const { contact } = props;
 
 	const [avatar, setAvatar] = useState(contact.avatar);
 	const [name, setName] = useState(contact.name);
@@ -183,20 +183,39 @@ function ContactDetailsForm(props: ContactDetailsProps) {
 						)}
 						<div className={style.formInputContainer}>
 							<Form.Label className={style.formLabel}>{field.label}</Form.Label>
-							<Form.Control asChild>
-								<input
-									className={style.input}
-									type={field.type}
-									value={field.value == null ? "" : field.value}
-									onChange={(e) => {
-										field.setValue(e.target.value.trimStart());
-									}}
-									pattern={field.pattern}
-									disabled={!!contact.id && !editMode}
-									placeholder={field.placeholder}
-									required
-								/>
-							</Form.Control>
+							<div className={style.formControl}>
+								<Form.Control asChild>
+									<input
+										className={style.input}
+										type={field.type}
+										value={field.value == null ? "" : field.value}
+										onChange={(e) => {
+											field.setValue(e.target.value.trimStart());
+										}}
+										pattern={field.pattern}
+										disabled={!!contact.id && !editMode}
+										placeholder={field.placeholder}
+										required
+									/>
+								</Form.Control>
+								{field.name == "phone" && (
+									<Button
+										type='button'
+										label={CopyIcon}
+										className={style.buttonLink}
+										onClick={() => navigator.clipboard.writeText(contact.phone)}
+										disabled={editMode}
+									/>
+								)}
+								{field.name == "email" && (
+									<a
+										href={`mailto:${contact.email}`}
+										target='_blank'
+										className={`${style.buttonLink} ${editMode && style.buttonLinkDisabled}`}>
+										{EnvelopeIcon}
+									</a>
+								)}
+							</div>
 						</div>
 					</Form.Field>
 				))}

@@ -1,37 +1,20 @@
 import style from "./App.module.css";
 import { useEffect, useState } from "react";
-import { readGroups } from "../supabase/groupsFunctions";
-import Loader from "./components/Atoms/Loader/Loader";
 import { Link, useLocation } from "react-router-dom";
 import { supabaseUrl } from "../supabase/supabaseClient";
-import { useGroupsContext, useSetGroupsContext } from "./providers/GroupsContext";
+import { useGroupsContext } from "./providers/GroupsContext";
 import { AddIcon } from "./assets/icons";
 
 const App = () => {
 	const path = useLocation();
 	const currentPathArray = path.pathname.split("/");
 	const currentPathLast = currentPathArray[currentPathArray.length - 1];
-	const setGroups = useSetGroupsContext();
 	const groups = useGroupsContext();
-
 	const [editMode, setEditMode] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
-
-	const getGroups = async () => {
-		setIsLoading(true);
-		setGroups(await readGroups());
-		setIsLoading(false);
-	};
-
-	useEffect(() => {
-		getGroups();
-	}, []);
 
 	useEffect(() => {
 		setEditMode(currentPathLast == "edit" ? true : false);
 	}, [path]);
-
-	if (isLoading) return <Loader />;
 
 	return (
 		<>

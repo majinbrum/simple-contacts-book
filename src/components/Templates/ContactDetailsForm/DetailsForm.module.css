@@ -16,8 +16,29 @@
 	gap: var(--space-xs);
 }
 
-.formField:has(button) {
+.formField:has(.toggle) {
 	width: unset;
+}
+
+.formControl {
+	width: 100%;
+	display: flex;
+	align-items: stretch;
+	gap: var(--space-md);
+}
+
+.formControl input {
+	flex-grow: 1;
+}
+
+.formControl .buttonLink {
+	cursor: pointer;
+	height: auto;
+	padding: var(--space-sm);
+}
+
+.formControl .buttonLink svg {
+	width: 20px;
 }
 
 .formInputContainer {
@@ -27,7 +48,7 @@
 	align-items: center;
 }
 
-.formInputContainer:has(button) {
+.formInputContainer:has(.toggle) {
 	width: unset;
 }
 
@@ -60,16 +81,19 @@
 }
 
 .input:disabled,
-.toggle:disabled {
+.toggle:disabled,
+.buttonLink:disabled,
+.buttonLink.buttonLinkDisabled {
+	pointer-events: none;
 	background-color: var(--white);
 	font-size: var(--font-size-md);
-	color: var(--blackLowOpacity);
-	fill: var(--blackLowOpacity);
+	fill: var(--accentLowOpacity);
 	outline: 2px solid var(--light);
 }
 
 .input:hover:not(:disabled),
-.toggle:hover:not(:disabled) {
+.toggle:hover:not(:disabled),
+.buttonLink:hover:not(:disabled):not(.buttonLinkDisabled) {
 	outline: 2px solid var(--accent);
 }
 
@@ -92,7 +116,8 @@
 	color: var(--white);
 }
 
-.toggle {
+.toggle,
+.buttonLink {
 	background-color: var(--light);
 	fill: var(--accent);
 	border-radius: 50%;
@@ -108,7 +133,8 @@
 	cursor: pointer;
 }
 
-.toggle:not([disabled]):active {
+.toggle:not([disabled]):active,
+.buttonLink:not(:disabled):not(.buttonLinkDisabled):active {
 	box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
 }
 
