@@ -2,15 +2,16 @@ import * as Form from "@radix-ui/react-form";
 import * as Toggle from "@radix-ui/react-toggle";
 
 import { ContactDetailsProps } from "../../../types/types";
-import style from "./ContactDetailsForm.module.css";
+import style from "./DetailsForm.module.css";
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormAlertDialog from "../../Molecules/FormAlertDialog/FormAlertDialog";
 import Button from "../../Atoms/Button/Button";
-import { createContact, deleteContactById, generateRandomAvatar, updateContactById } from "../../../../supabase/functions";
+import { createContact, deleteContactById, updateContactById } from "../../../../supabase/contactsFunctions";
 import { supabaseUrl } from "../../../../supabase/supabaseClient";
 import ContactCard from "../../Atoms/ContactCard/ContactCard";
 import Loader from "../../Atoms/Loader/Loader";
+import { generateRandomAvatar } from "../../../../supabase/functions";
 
 const StarIcon = (
 	<svg
@@ -184,9 +185,9 @@ function ContactDetailsForm(props: ContactDetailsProps) {
 								<input
 									className={style.input}
 									type={field.type}
-									value={field.value}
+									value={field.value || ""}
 									onChange={(e) => {
-										setNewContact({ ...newContact, [field.name]: e.target.value.trimStart() });
+										setNewContact({ ...newContact, [field.name]: field.name == "tag" ? e.target.value.trim().replace(/ /g, "") : e.target.value.trimStart() });
 									}}
 									disabled={!!contact.id && !editMode}
 									pattern={field.name === "phone" ? "[0-9+*#]*" : undefined}

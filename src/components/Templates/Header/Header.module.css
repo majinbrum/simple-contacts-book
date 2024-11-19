@@ -18,6 +18,10 @@
 	border-radius: 50%;
 	background-color: var(--light);
 	fill: var(--accent);
+
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .headerButton:active {

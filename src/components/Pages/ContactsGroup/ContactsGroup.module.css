@@ -7,3 +7,47 @@
 .listsContainer.reverse {
 	flex-direction: column-reverse;
 }
+
+.noContactsContainer {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-md);
+}
+
+.noContactsContainer div {
+	display: flex;
+	gap: var(--space-md);
+}
+
+.noContactsContainer .addLink {
+	display: flex;
+	align-items: center;
+	gap: var(--space-sm);
+	padding: var(--space-md);
+	max-width: 220px;
+	text-align: center;
+	border-radius: var(--border-radius);
+
+	background-color: var(--light);
+	color: var(--accent);
+	font-weight: var(--font-weight-medium);
+}
+
+.noContactsContainer .addLink:active {
+	box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+}
+
+.noContactsContainer .addLink:focus-visible {
+	outline: 2px solid var(--accent);
+}
+
+.noContactsContainer .addLink:hover {
+	background-color: var(--white);
+}
+
+.noContactsContainer .addLink svg {
+	display: block;
+	fill: var(--accent);
+	height: 20px;
+	width: 20px;
+}

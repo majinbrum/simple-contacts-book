@@ -1,5 +1,5 @@
 import { Dispatch, FormEvent, ReactElement, ReactNode, SetStateAction } from "react";
-import { IContact } from "./databaseTypes";
+import { IContact, IGroup } from "./databaseTypes";
 
 export interface IValue {
 	label: string;
@@ -61,6 +61,10 @@ export interface IContactToCreate {
 
 export interface ContactDetailsProps {
 	contact: IContact;
+}
+
+export interface GroupDetailsProps {
+	group: IGroup;
 }
 
 export interface IFilteredContacts {

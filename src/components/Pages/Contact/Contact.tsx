@@ -3,7 +3,7 @@ import style from "./Contact.module.css";
 import ContactDetailsForm from "../../Templates/ContactDetailsForm/ContactDetailsForm";
 import { useEffect, useState } from "react";
 import { IContact } from "../../../types/databaseTypes";
-import { readContactById } from "../../../../supabase/functions";
+import { readContactById } from "../../../../supabase/contactsFunctions";
 import Loader from "../../Atoms/Loader/Loader";
 
 const defaultContact = {
