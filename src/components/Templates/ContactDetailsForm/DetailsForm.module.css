@@ -43,6 +43,7 @@
 
 .formLabel {
 	font-size: var(--font-size-md);
+	font-weight: var(--font-weight-medium);
 }
 
 .input {
@@ -50,12 +51,26 @@
 	box-sizing: border-box;
 
 	font-size: 16px;
-	font-weight: var(--font-weight-medium);
+	font-weight: var(--font-weight-light);
 
 	border: none;
 	border-radius: var(--border-radius);
 	background-color: var(--light);
 	padding: var(--space-sm);
+}
+
+.input:disabled,
+.toggle:disabled {
+	background-color: var(--white);
+	font-size: var(--font-size-md);
+	color: var(--blackLowOpacity);
+	fill: var(--blackLowOpacity);
+	outline: 2px solid var(--light);
+}
+
+.input:hover:not(:disabled),
+.toggle:hover:not(:disabled) {
+	outline: 2px solid var(--accent);
 }
 
 .input::placeholder {
@@ -83,6 +98,10 @@
 	border-radius: 50%;
 	padding: var(--space-xs);
 	border: none;
+
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .toggle:not([disabled]) {

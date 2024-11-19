@@ -9,9 +9,6 @@ const Header = () => {
 	const currentPath = path.pathname;
 	const currentPathArray = path.pathname.split("/");
 	const currentPathLast = currentPathArray[currentPathArray.length - 1];
-	console.log(currentPathArray);
-	console.log(currentPathArray.length);
-	console.log(currentPathLast);
 
 	return (
 		<header className={style.header}>

@@ -47,7 +47,7 @@ const App = () => {
 								loading='lazy'
 							/>
 						</div>
-						all
+						All
 					</Link>
 				)}
 				{groups.map((group, i) => (
@@ -65,12 +65,14 @@ const App = () => {
 						{group.tag}
 					</Link>
 				))}
-				<Link
-					to={"groups/add"}
-					className={style.homeLink}>
-					<div className={style.homeLinkIcon}>{AddIcon}</div>
-					Add group
-				</Link>
+				{!editMode && (
+					<Link
+						to={"groups/add"}
+						className={style.homeLink}>
+						<div className={style.homeLinkIcon}>{AddIcon}</div>
+						Add group
+					</Link>
+				)}
 			</div>
 		</>
 	);
