@@ -11,6 +11,7 @@ import Loader from "../../Atoms/Loader/Loader";
 import { createGroup, deleteGroupById, updateGroupById } from "../../../../supabase/groupsFunctions";
 import { generateRandomAvatar } from "../../../../supabase/functions";
 import { RepeatIcon } from "../../../assets/icons";
+import ErrorBox from "../../Molecules/ErrorBox/ErrorBox";
 
 function GroupDetailsForm(props: GroupDetailsProps) {
 	const { group } = props;
@@ -18,8 +19,8 @@ function GroupDetailsForm(props: GroupDetailsProps) {
 
 	const [editMode, setEditMode] = useState(false);
 	const [newGroup, setNewGroup] = useState(group);
-	const [isFormValid, setIsFormValid] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState<string>();
 
 	const enterEditMode = (e: FormEvent) => {
 		e.preventDefault();
@@ -33,51 +34,79 @@ function GroupDetailsForm(props: GroupDetailsProps) {
 	};
 
 	const deleteGroup = async () => {
-		setEditMode(false);
-		const data = await deleteGroupById(group.id);
-		console.log(data);
-		navigate("/");
+		try {
+			setEditMode(false);
+			const data = await deleteGroupById(group.id);
+			console.log(data);
+		} catch (error: any) {
+			setError(error.message);
+		} finally {
+			navigate("/");
+		}
 	};
 
 	const generateNewAvatar = async (e: FormEvent) => {
 		e.preventDefault();
-		const newAvatarPath = await generateRandomAvatar(newGroup.avatar);
-		setNewGroup({ ...newGroup, avatar: newAvatarPath });
+		try {
+			const newAvatarPath = await generateRandomAvatar(newGroup.avatar);
+			setNewGroup({ ...newGroup, avatar: newAvatarPath });
+		} catch (error: any) {
+			setError(error.message);
+		}
 	};
 
 	const validateForm = (e: FormEvent) => {
 		const target = e.target as HTMLElement;
 		const form = target.closest("form");
-		setIsFormValid(form?.checkValidity() ? true : false);
+		if (form?.checkValidity()) {
+			return true;
+		} else {
+			setIsLoading(false);
+			return false;
+		}
 	};
 
 	const updateGroup = async (e: FormEvent) => {
 		setIsLoading(true);
 		e.preventDefault();
-		if (!isFormValid) {
-			validateForm(e);
+		const formValidation = validateForm(e);
+
+		if (formValidation == true) {
+			try {
+				setEditMode(false);
+				const data = await updateGroupById(group.id, newGroup);
+				console.log(data);
+			} catch (error: any) {
+				setError(error.message);
+			} finally {
+				setIsLoading(false);
+			}
+		} else {
+			// validateForm(e);
 			setIsLoading(false);
 			return;
-		} else {
-			setEditMode(false);
-			const data = await updateGroupById(group.id, newGroup);
-			console.log(data);
-			setIsLoading(false);
 		}
 	};
 
 	const createNewGroup = async (e: FormEvent) => {
 		setIsLoading(true);
 		e.preventDefault();
-		if (!isFormValid) {
-			validateForm(e);
+		const formValidation = validateForm(e);
+
+		if (formValidation == true) {
+			try {
+				const data = await createGroup(newGroup);
+				console.log(data);
+			} catch (error: any) {
+				setError(error.message);
+			} finally {
+				setIsLoading(false);
+				navigate("/");
+			}
+		} else {
+			// validateForm(e);
 			setIsLoading(false);
 			return;
-		} else {
-			const data = await createGroup(newGroup);
-			console.log(data);
-			setIsLoading(false);
-			navigate("/");
 		}
 	};
 
@@ -90,6 +119,8 @@ function GroupDetailsForm(props: GroupDetailsProps) {
 	};
 
 	if (isLoading) return <Loader />;
+
+	if (error) return <ErrorBox message={error} />;
 
 	return (
 		<>

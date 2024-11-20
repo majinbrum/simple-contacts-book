@@ -11,21 +11,67 @@ import Loader from "../../Atoms/Loader/Loader";
 import { IFilteredContacts } from "../../../types/types";
 import { readContacts } from "../../../../supabase/contactsFunctions";
 import { AddIcon, SearchIcon } from "../../../assets/icons";
+import ErrorBox from "../../Molecules/ErrorBox/ErrorBox";
+import { useGroupsContext, useSetGroupsContext } from "../../../providers/GroupsContext";
 
 const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+
+const defaultFilteredContacts = {
+	contacts: [],
+};
 
 const ContactsGroup = () => {
 	const { group } = useParams();
 	const setContacts = useSetContactsContext();
+	const groups = useGroupsContext();
+	const getGroups = useSetGroupsContext();
 	const contacts = useContactsContext();
 	const filter = useFilterContext();
 	const sortBy = useSortByContext();
 	const order = useOrderContext();
 
-	const [isLoading, setIsLoading] = useState(false);
-	const [filteredContacts, setFilteredContacts] = useState<IFilteredContacts>();
+	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState<string>();
+	const [filteredContacts, setFilteredContacts] = useState<IFilteredContacts>(defaultFilteredContacts);
+
+	const getContacts = async () => {
+		if (!group) return;
+		try {
+			setIsLoading(true);
+			const data = await readContacts(group, sortBy, order);
+			setContacts(data);
+		} catch (error: any) {
+			setError(error.message);
+			console.dir(error);
+			console.log(error);
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
+	useEffect(() => {
+		setIsLoading(true);
+		const data = getGroups();
+		if (typeof data === "string") {
+			setError(data);
+		} else {
+			setIsLoading(false);
+		}
+	}, []);
+
+	useEffect(() => {
+		console.log(groups);
+		console.log(group);
+	}, [groups]);
+
+	useEffect(() => {
+		setIsLoading(true);
+		getContacts();
+		setIsLoading(false);
+	}, [group]);
 
 	const renderLists = () => {
+		setIsLoading(true);
 		const temp: IFilteredContacts = {};
 
 		temp["FAVOURITES"] = [];
@@ -47,31 +93,22 @@ const ContactsGroup = () => {
 			});
 
 		setFilteredContacts(temp);
+		setIsLoading(false);
 	};
-
-	const getContacts = async () => {
-		if (group) {
-			setIsLoading(true);
-			setContacts(await readContacts(group, sortBy, order));
-			setIsLoading(false);
-		}
-	};
-
-	useEffect(() => {
-		getContacts();
-	}, [group]);
 
 	useEffect(() => {
 		renderLists();
 	}, [contacts, filter, sortBy, order]);
 
-	if (!filteredContacts || isLoading) return <Loader />;
+	if (isLoading) return <Loader />;
+
+	if (error) return <ErrorBox message={error} />;
 
 	return (
 		<>
 			<SearchBox />
 			<h2>#{group?.toUpperCase()} CONTACTS</h2>
-			{contacts.length === 0 && (
+			{!error && contacts.length === 0 && (
 				<>
 					<div className={style.noContactsContainer}>
 						<p>There are no contacts in this group yet.</p>

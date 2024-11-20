@@ -1,33 +1,27 @@
-import { createContext, Dispatch, PropsWithChildren, SetStateAction, useContext, useEffect, useState } from "react";
+import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { IGroup } from "../types/databaseTypes";
 import { readGroups } from "../../supabase/groupsFunctions";
-import Loader from "../components/Atoms/Loader/Loader";
 
-type ISetGroups = Dispatch<SetStateAction<IGroup[]>>;
+type ISetGroups = () => Promise<void>;
 
 export const GroupsContext = createContext<IGroup[]>([]);
-export const SetGroupsContext = createContext<ISetGroups>(() => {});
+export const SetGroupsContext = createContext<ISetGroups>(() => Promise.resolve());
 
 function GroupsProvider({ children }: PropsWithChildren) {
 	const [groups, setGroups] = useState<IGroup[]>([]);
-	const [isLoading, setIsLoading] = useState(false);
 
 	const getGroups = async () => {
-		setIsLoading(true);
-		const groups = await readGroups();
-		setGroups(groups);
-		setIsLoading(false);
+		try {
+			const groups = await readGroups();
+			setGroups(groups);
+		} catch (error: any) {
+			return error.message;
+		}
 	};
-
-	useEffect(() => {
-		getGroups();
-	}, []);
-
-	if (isLoading) return <Loader />;
 
 	return (
 		<GroupsContext.Provider value={groups}>
-			<SetGroupsContext.Provider value={setGroups}>{children}</SetGroupsContext.Provider>
+			<SetGroupsContext.Provider value={getGroups}>{children}</SetGroupsContext.Provider>
 		</GroupsContext.Provider>
 	);
 }
