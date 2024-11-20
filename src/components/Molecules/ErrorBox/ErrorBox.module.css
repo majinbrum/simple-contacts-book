@@ -1,0 +1,48 @@
+.errorContainer {
+	margin: var(--space-lg) auto;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-md);
+	justify-content: center;
+	align-items: center;
+
+	text-align: center;
+}
+
+.errorMessage {
+	max-width: 45ch;
+	color: var(--errorRed);
+}
+
+.errorLink {
+	display: flex;
+	align-items: center;
+	gap: var(--space-sm);
+	padding: var(--space-md);
+	text-align: center;
+	border-radius: var(--border-radius);
+
+	background-color: var(--light);
+	color: var(--errorRed);
+	font-weight: var(--font-weight-medium);
+}
+
+.errorLink:active {
+	box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+}
+
+.errorLink:focus-visible {
+	outline: 2px solid var(--errorRed);
+}
+
+.errorLink:hover {
+	background-color: var(--white);
+}
+
+.errorLink svg {
+	display: block;
+	fill: var(--errorRed);
+	height: 20px;
+	width: 20px;
+}

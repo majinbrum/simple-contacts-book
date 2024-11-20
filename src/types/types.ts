@@ -72,3 +72,7 @@ export interface GroupDetailsProps {
 export interface IFilteredContacts {
 	[key: string]: IContact[];
 }
+
+export interface ErrorBoxProps {
+	message: string;
+}

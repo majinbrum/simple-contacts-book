@@ -14,6 +14,7 @@ import { generateRandomAvatar } from "../../../../supabase/functions";
 import { CopyIcon, EnvelopeIcon, FilledStarIcon, RepeatIcon, StarIcon } from "../../../assets/icons";
 import InputSelect from "../../Atoms/InputSelect/InputSelect";
 import { useGroupsContext } from "../../../providers/GroupsContext";
+import ErrorBox from "../../Molecules/ErrorBox/ErrorBox";
 
 function ContactDetailsForm(props: ContactDetailsProps) {
 	const groups = useGroupsContext();
@@ -31,8 +32,8 @@ function ContactDetailsForm(props: ContactDetailsProps) {
 	const [newContact, setNewContact] = useState(contact);
 
 	const [editMode, setEditMode] = useState(false);
-	const [isFormValid, setIsFormValid] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState<string>();
 
 	const formFields = [
 		{ name: "name", label: "Name", value: name, setValue: setName, type: "text", placeholder: "Bruna" },
@@ -59,16 +60,25 @@ function ContactDetailsForm(props: ContactDetailsProps) {
 	};
 
 	const deleteContact = async () => {
-		setEditMode(false);
-		const data = await deleteContactById(contact.id);
-		console.log(data);
-		navigate("/");
+		try {
+			setEditMode(false);
+			const data = await deleteContactById(contact.id);
+			console.log(data);
+		} catch (error: any) {
+			setError(error.message);
+		} finally {
+			navigate("/");
+		}
 	};
 
 	const generateNewAvatar = async (e: FormEvent) => {
 		e.preventDefault();
-		const newAvatarPath = await generateRandomAvatar(avatar);
-		setAvatar(newAvatarPath);
+		try {
+			const newAvatarPath = await generateRandomAvatar(avatar);
+			setAvatar(newAvatarPath);
+		} catch (error: any) {
+			setError(error.message);
+		}
 	};
 
 	const validateForm = (e: FormEvent) => {
@@ -77,10 +87,8 @@ function ContactDetailsForm(props: ContactDetailsProps) {
 
 		if (form?.checkValidity()) {
 			setNewContact({ ...contact, avatar, name, surname, phone, email, tag: tag === "None" ? null : tag, favourite });
-			setIsFormValid(true);
 			return true;
 		} else {
-			setIsFormValid(false);
 			setIsLoading(false);
 			return false;
 		}
@@ -88,15 +96,20 @@ function ContactDetailsForm(props: ContactDetailsProps) {
 
 	const updateContact = async (e: FormEvent) => {
 		setIsLoading(true);
-		console.log("click");
 		e.preventDefault();
 		const formValidation = validateForm(e);
 		if (formValidation == true) {
-			const data = await updateContactById(contact.id, newContact);
-			console.log(data);
-			setEditMode(false);
-			setIsLoading(false);
+			try {
+				const data = await updateContactById(contact.id, newContact);
+				console.log(data);
+			} catch (error: any) {
+				setError(error.message);
+			} finally {
+				setEditMode(false);
+				setIsLoading(false);
+			}
 		} else {
+			setIsLoading(false);
 			return;
 		}
 	};
@@ -104,16 +117,22 @@ function ContactDetailsForm(props: ContactDetailsProps) {
 	const createNewContact = async (e: FormEvent) => {
 		setIsLoading(true);
 		e.preventDefault();
-		validateForm(e);
-		if (!isFormValid) {
+		const formValidation = validateForm(e);
+
+		if (formValidation == true) {
+			try {
+				const data = await createContact(newContact);
+				console.log(data);
+			} catch (error: any) {
+				setError(error.message);
+			} finally {
+				setEditMode(false);
+				setIsLoading(false);
+				navigate("/");
+			}
+		} else {
 			setIsLoading(false);
 			return;
-		} else {
-			const data = await createContact(newContact);
-			console.log(data);
-			setEditMode(false);
-			setIsLoading(false);
-			navigate("/");
 		}
 	};
 
@@ -126,6 +145,8 @@ function ContactDetailsForm(props: ContactDetailsProps) {
 	};
 
 	if (isLoading) return <Loader />;
+
+	if (error) return <ErrorBox message={error} />;
 
 	return (
 		<>

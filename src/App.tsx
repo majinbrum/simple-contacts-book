@@ -2,19 +2,38 @@ import style from "./App.module.css";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { supabaseUrl } from "../supabase/supabaseClient";
-import { useGroupsContext } from "./providers/GroupsContext";
+import { useGroupsContext, useSetGroupsContext } from "./providers/GroupsContext";
 import { AddIcon } from "./assets/icons";
+import Loader from "./components/Atoms/Loader/Loader";
+import ErrorBox from "./components/Molecules/ErrorBox/ErrorBox";
 
 const App = () => {
 	const path = useLocation();
 	const currentPathArray = path.pathname.split("/");
 	const currentPathLast = currentPathArray[currentPathArray.length - 1];
 	const groups = useGroupsContext();
+	const getGroups = useSetGroupsContext();
 	const [editMode, setEditMode] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState<string>();
+
+	useEffect(() => {
+		setIsLoading(true);
+		const data = getGroups();
+		if (typeof data === "string") {
+			setError(data);
+		} else {
+			setIsLoading(false);
+		}
+	}, []);
 
 	useEffect(() => {
 		setEditMode(currentPathLast == "edit" ? true : false);
 	}, [path]);
+
+	if (isLoading) return <Loader />;
+
+	if (error) return <ErrorBox message={error} />;
 
 	return (
 		<>
