@@ -1,4 +1,6 @@
+// CSS
 import style from "./InputText.module.css";
+// Interfaces
 import { InputTextProps } from "../../../types/types";
 
 const InputText = (props: InputTextProps) => {
@@ -8,7 +10,7 @@ const InputText = (props: InputTextProps) => {
 		<label
 			htmlFor={name}
 			className={style.inputTextLabel}>
-			{icon ? icon : null}
+			{icon || null}
 			<input
 				className={style.inputText}
 				name={name}

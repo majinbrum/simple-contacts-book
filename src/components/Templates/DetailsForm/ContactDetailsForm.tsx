@@ -1,35 +1,43 @@
-import * as Form from "@radix-ui/react-form";
-import * as Toggle from "@radix-ui/react-toggle";
-import { ContactDetailsProps } from "../../../types/types";
+// CSS
 import style from "./DetailsForm.module.css";
+// React
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+// Radix UI components
+import * as Form from "@radix-ui/react-form";
+import * as Toggle from "@radix-ui/react-toggle";
+// Interfaces
+import { ContactDetailsProps } from "../../../types/types";
+// Components
 import FormAlertDialog from "../../Molecules/FormAlertDialog/FormAlertDialog";
 import Button from "../../Atoms/Button/Button";
-import { createContact, deleteContactById, updateContactById } from "../../../../supabase/contactsFunctions";
-import { supabaseUrl } from "../../../../supabase/supabaseClient";
 import ContactCard from "../../Atoms/ContactCard/ContactCard";
 import Loader from "../../Atoms/Loader/Loader";
-import { generateRandomAvatar } from "../../../../supabase/functions";
-import { CopyIcon, EnvelopeIcon, FilledStarIcon, RepeatIcon, StarIcon } from "../../../assets/icons";
 import InputSelect from "../../Atoms/InputSelect/InputSelect";
-import { useGroupsContext } from "../../../providers/GroupsContext";
 import ErrorBox from "../../Molecules/ErrorBox/ErrorBox";
+// Supabase
+import { supabaseUrl } from "../../../../supabase/supabaseClient";
+import { createContact, deleteContactById, updateContactById } from "../../../../supabase/contactsFunctions";
+import { generateRandomAvatar } from "../../../../supabase/functions";
+// Context
+import { useGroupsContext } from "../../../providers/GroupsContext";
+// Assets
+import { CopyIcon, EnvelopeIcon, FilledStarIcon, RepeatIcon, StarIcon } from "../../../assets/icons";
 
 function ContactDetailsForm(props: ContactDetailsProps) {
 	const groups = useGroupsContext();
 	const navigate = useNavigate();
 	const { contact } = props;
 
-	const [avatar, setAvatar] = useState(contact.avatar);
-	const [name, setName] = useState(contact.name);
-	const [surname, setSurname] = useState(contact.surname);
-	const [phone, setPhone] = useState(contact.phone);
-	const [email, setEmail] = useState(contact.email);
-	const [tag, setTag] = useState(contact.tag ? contact.tag : "None");
-	const [favourite, setFavourite] = useState(contact.favourite);
-
 	const [newContact, setNewContact] = useState(contact);
+
+	const [avatar, setAvatar] = useState(newContact.avatar);
+	const [name, setName] = useState(newContact.name);
+	const [surname, setSurname] = useState(newContact.surname);
+	const [phone, setPhone] = useState(newContact.phone);
+	const [email, setEmail] = useState(newContact.email);
+	const [tag, setTag] = useState(newContact.tag || "None");
+	const [favourite, setFavourite] = useState(newContact.favourite);
 
 	const [editMode, setEditMode] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
@@ -48,13 +56,13 @@ function ContactDetailsForm(props: ContactDetailsProps) {
 	};
 
 	const handleReset = () => {
-		setAvatar(contact.avatar);
-		setName(contact.name);
-		setSurname(contact.surname);
-		setPhone(contact.phone);
-		setEmail(contact.email);
-		setFavourite(contact.favourite);
-		setTag(contact.tag || "None");
+		setAvatar(newContact.avatar);
+		setName(newContact.name);
+		setSurname(newContact.surname);
+		setPhone(newContact.phone);
+		setEmail(newContact.email);
+		setFavourite(newContact.favourite);
+		setTag(newContact.tag || "None");
 		setEditMode(false);
 		console.log("reset");
 	};
@@ -74,7 +82,7 @@ function ContactDetailsForm(props: ContactDetailsProps) {
 	const generateNewAvatar = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
-			const newAvatarPath = await generateRandomAvatar(avatar);
+			const newAvatarPath = await generateRandomAvatar(newContact.avatar);
 			setAvatar(newAvatarPath);
 		} catch (error: any) {
 			setError(error.message);
@@ -84,55 +92,36 @@ function ContactDetailsForm(props: ContactDetailsProps) {
 	const validateForm = (e: FormEvent) => {
 		const target = e.target as HTMLElement;
 		const form = target.closest("form");
-
 		if (form?.checkValidity()) {
-			setNewContact({ ...contact, avatar, name, surname, phone, email, tag: tag === "None" ? null : tag, favourite });
 			return true;
 		} else {
-			setIsLoading(false);
 			return false;
 		}
 	};
 
-	const updateContact = async (e: FormEvent) => {
-		setIsLoading(true);
+	const submitContact = async (e: FormEvent) => {
 		e.preventDefault();
-		const formValidation = validateForm(e);
-		if (formValidation == true) {
+		setIsLoading(true);
+		if (validateForm(e)) {
+			const tempNewContact = { ...contact, avatar, name, surname, phone, email, tag: tag === "None" ? null : tag, favourite };
+			setNewContact(tempNewContact);
 			try {
-				const data = await updateContactById(contact.id, newContact);
-				console.log(data);
+				if (contact.id) {
+					const data = await updateContactById(contact.id, tempNewContact);
+					console.log(data);
+				} else {
+					const data = await createContact(tempNewContact);
+					console.log(data);
+				}
 			} catch (error: any) {
 				setError(error.message);
 			} finally {
 				setEditMode(false);
 				setIsLoading(false);
+				!contact.id && navigate("/");
 			}
 		} else {
 			setIsLoading(false);
-			return;
-		}
-	};
-
-	const createNewContact = async (e: FormEvent) => {
-		setIsLoading(true);
-		e.preventDefault();
-		const formValidation = validateForm(e);
-
-		if (formValidation == true) {
-			try {
-				const data = await createContact(newContact);
-				console.log(data);
-			} catch (error: any) {
-				setError(error.message);
-			} finally {
-				setEditMode(false);
-				setIsLoading(false);
-				navigate("/");
-			}
-		} else {
-			setIsLoading(false);
-			return;
 		}
 	};
 
@@ -144,14 +133,13 @@ function ContactDetailsForm(props: ContactDetailsProps) {
 		actionButtonFunction: !contact.id ? () => navigate("/") : deleteContact,
 	};
 
-	if (isLoading) return <Loader />;
-
 	if (error) return <ErrorBox message={error} />;
+	if (isLoading) return <Loader />;
 
 	return (
 		<>
 			<ContactCard
-				contact={{ ...contact, avatar, name, surname, phone, email, tag, favourite }}
+				contact={{ ...newContact, avatar, name, surname, phone, email, tag, favourite }}
 				listType='alphabetical'
 			/>
 			<Form.Root className={style.formRoot}>
@@ -224,13 +212,13 @@ function ContactDetailsForm(props: ContactDetailsProps) {
 										type='button'
 										label={CopyIcon}
 										className={style.buttonLink}
-										onClick={() => navigator.clipboard.writeText(contact.phone)}
+										onClick={() => navigator.clipboard.writeText(newContact.phone)}
 										disabled={editMode}
 									/>
 								)}
 								{field.name == "email" && (
 									<a
-										href={`mailto:${contact.email}`}
+										href={`mailto:${newContact.email}`}
 										target='_blank'
 										className={`${style.buttonLink} ${editMode && style.buttonLinkDisabled}`}>
 										{EnvelopeIcon}
@@ -285,7 +273,7 @@ function ContactDetailsForm(props: ContactDetailsProps) {
 								<Button
 									type='submit'
 									className={style.editPrimaryButton}
-									onClick={(e: FormEvent) => updateContact(e)}
+									onClick={(e: FormEvent) => submitContact(e)}
 									label='Save'
 								/>
 							</Form.Submit>
@@ -303,7 +291,7 @@ function ContactDetailsForm(props: ContactDetailsProps) {
 								<Button
 									type={!contact.id ? "submit" : "button"}
 									className={style.formPrimaryButton}
-									onClick={!contact.id ? (e: FormEvent) => createNewContact(e) : (e: FormEvent) => enterEditMode(e)}
+									onClick={!contact.id ? (e: FormEvent) => submitContact(e) : (e: FormEvent) => enterEditMode(e)}
 									label={!contact.id ? "Create" : "Edit"}
 								/>
 							</Form.Submit>

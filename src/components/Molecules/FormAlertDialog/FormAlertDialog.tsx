@@ -1,6 +1,10 @@
-import * as AlertDialog from "@radix-ui/react-alert-dialog";
+// CSS
 import style from "./FormAlertDialog.module.css";
+// Interfaces
 import { FormAlertDialogProps } from "../../../types/types";
+// Radix UI component
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
+// Components
 import Button from "../../Atoms/Button/Button";
 
 const FormAlertDialog = (props: FormAlertDialogProps) => {

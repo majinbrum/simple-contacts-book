@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+// CSS
 import style from "./ErrorBox.module.css";
-import { ErrorBoxProps } from "../../../types/types";
-
-import ErrorBlob from "/errorBlob.png";
+// React
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+// Interfaces
+import { ErrorBoxProps } from "../../../types/types";
+// Assets
 import { HomeIcon } from "../../../assets/icons";
+import ErrorBlob from "/errorBlob.png";
 
 function ErrorBox(props: ErrorBoxProps) {
 	const { message } = props;

@@ -1,17 +1,21 @@
+// CSS
+import "./index.css";
+// React
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
-import App from "./App.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+// Components
+import App from "./App.tsx";
 import Default from "./components/Pages/Default/Default.tsx";
 import Contact from "./components/Pages/Contact/Contact.tsx";
+import ContactsGroup from "./components/Pages/ContactsGroup/ContactsGroup.tsx";
+import Group from "./components/Pages/Group/Group.tsx";
+// Context
 import SortByProvider from "./providers/SortByContext.tsx";
 import OrderProvider from "./providers/OrderContext.tsx";
 import FilterProvider from "./providers/FilterContext.tsx";
-import ContactsGroup from "./components/Pages/ContactsGroup/ContactsGroup.tsx";
 import ContactsProvider from "./providers/ContactsContext.tsx";
 import GroupsProvider from "./providers/GroupsContext.tsx";
-import Group from "./components/Pages/Group/Group.tsx";
 
 const router = createBrowserRouter([
 	{

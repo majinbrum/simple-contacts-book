@@ -1,5 +1,8 @@
-import { ContactCardProps } from "../../../types/types";
+// CSS
 import style from "./ContactCard.module.css";
+// Interface
+import { ContactCardProps } from "../../../types/types";
+// Supabase
 import { supabaseUrl } from "../../../../supabase/supabaseClient";
 
 const ContactCard = (props: ContactCardProps) => {

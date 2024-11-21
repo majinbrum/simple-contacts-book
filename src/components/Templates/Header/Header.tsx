@@ -1,6 +1,9 @@
+// CSS
+import style from "./Header.module.css";
+// React
 import { useLocation, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import style from "./Header.module.css";
+// Assets
 import { AddIcon, BackIcon, EditIcon, HomeIcon } from "../../../assets/icons";
 
 const Header = () => {

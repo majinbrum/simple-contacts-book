@@ -1,21 +1,20 @@
+// CSS
 import style from "./ContactsList.module.css";
+// React
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+// Interfaces
 import { ContactsListProps } from "../../../types/types";
+// Components
 import ContactCard from "../../Atoms/ContactCard/ContactCard";
 import Button from "../../Atoms/Button/Button";
-import { useEffect, useState } from "react";
+// Assets
 import { ChevronDownIcon, ChevronLeftIcon } from "../../../assets/icons";
 
 const ContactsList = (props: ContactsListProps) => {
 	const { group } = useParams();
 	const { title, contacts, listType, order } = props;
-	const [showFavourites, setShowFavourites] = useState(true);
-
-	useEffect(() => {
-		if (title !== "FAVOURITES") {
-			setShowFavourites(true);
-		}
-	}, [contacts]);
+	const [showList, setShowList] = useState(true);
 
 	return (
 		<div className={style.contactsListContainer}>
@@ -23,11 +22,11 @@ const ContactsList = (props: ContactsListProps) => {
 				<h2>{title}</h2>
 				<Button
 					type='button'
-					label={showFavourites ? ChevronDownIcon : ChevronLeftIcon}
-					onClick={() => setShowFavourites(!showFavourites)}
+					label={showList ? ChevronDownIcon : ChevronLeftIcon}
+					onClick={() => setShowList(!showList)}
 				/>
 			</div>
-			{showFavourites && (
+			{showList && (
 				<div
 					className={`${listType === "favourites" ? style.contactsFavouriteGrid : style.contactsList} ${order == "descending" ? style.contactsReverseOrder : null} ${
 						contacts.length < 2 && style.oneItem
