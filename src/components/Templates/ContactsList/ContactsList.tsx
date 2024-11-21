@@ -1,7 +1,7 @@
 // CSS
 import style from "./ContactsList.module.css";
 // React
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 // Interfaces
 import { ContactsListProps } from "../../../types/types";
