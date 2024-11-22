@@ -11,7 +11,6 @@ import ErrorBox from "../../Molecules/ErrorBox/ErrorBox";
 // Context
 import { useOrderContext } from "../../../providers/OrderContext";
 import { useFilterContext } from "../../../providers/FilterContext";
-import { useContactsContext, useSetContactsContext } from "../../../providers/ContactsContext";
 import { useSortByContext } from "../../../providers/SortByContext";
 import { useSetGroupsContext } from "../../../providers/GroupsContext";
 // Interfaces
@@ -26,13 +25,12 @@ const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M
 
 const ContactsGroup = () => {
 	const { group } = useParams();
-	const setContacts = useSetContactsContext();
 	const getGroups = useSetGroupsContext();
-	const contacts = useContactsContext();
 	const filter = useFilterContext();
 	const sortBy = useSortByContext();
 	const order = useOrderContext();
 
+	const [contacts, setContacts] = useState<IContact[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string>();
 	const [filteredContacts, setFilteredContacts] = useState<IFilteredContacts | null>(null);

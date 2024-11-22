@@ -14,7 +14,6 @@ import Group from "./components/Pages/Group/Group.tsx";
 import SortByProvider from "./providers/SortByContext.tsx";
 import OrderProvider from "./providers/OrderContext.tsx";
 import FilterProvider from "./providers/FilterContext.tsx";
-import ContactsProvider from "./providers/ContactsContext.tsx";
 import GroupsProvider from "./providers/GroupsContext.tsx";
 
 const router = createBrowserRouter([
@@ -61,9 +60,7 @@ createRoot(document.getElementById("root")!).render(
 			<SortByProvider>
 				<OrderProvider>
 					<GroupsProvider>
-						<ContactsProvider>
-							<RouterProvider router={router} />
-						</ContactsProvider>
+						<RouterProvider router={router} />
 					</GroupsProvider>
 				</OrderProvider>
 			</SortByProvider>
