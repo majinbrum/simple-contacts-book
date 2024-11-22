@@ -28,6 +28,31 @@ export interface InputTextProps {
 	icon?: ReactElement;
 }
 
+export interface FormTextFieldsProps {
+	editMode: boolean;
+	formFields: {
+		name: string;
+		label: string;
+		value: string;
+		setValue: Dispatch<SetStateAction<string>>;
+		type: string;
+		placeholder: string;
+		pattern?: string;
+	}[];
+	disabled: boolean;
+}
+
+export interface FormActionsProps {
+	editMode: boolean;
+	handleReset: () => void;
+	submitContact?: (e: FormEvent) => Promise<void>;
+	submitGroup?: (e: FormEvent) => Promise<void>;
+	id: string;
+	enterEditMode: (e: FormEvent) => void;
+	setEditMode: Dispatch<SetStateAction<boolean>>;
+	setError: Dispatch<SetStateAction<string | undefined>>;
+}
+
 export interface ContactsListProps {
 	contacts: IContact[];
 	title: string;

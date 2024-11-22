@@ -1,5 +1,5 @@
 // CSS
-import style from "./DetailsForm.module.css";
+import "./DetailsForm.css";
 // React
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,13 +9,13 @@ import * as Form from "@radix-ui/react-form";
 import { GroupDetailsProps } from "../../../types/types";
 // Supabase
 import { supabaseUrl } from "../../../../supabase/supabaseClient";
-import { createGroup, deleteGroupById, updateGroupById } from "../../../../supabase/groupsFunctions";
+import { createGroup, updateGroupById } from "../../../../supabase/groupsFunctions";
 import { generateRandomAvatar } from "../../../../supabase/functions";
 // Components
-import FormAlertDialog from "../../Molecules/FormAlertDialog/FormAlertDialog";
 import Button from "../../Atoms/Button/Button";
 import Loader from "../../Atoms/Loader/Loader";
 import ErrorBox from "../../Molecules/ErrorBox/ErrorBox";
+import FormActions from "../../Organisms/FormActions/FormActions";
 // Assets
 import { RepeatIcon } from "../../../assets/icons";
 
@@ -42,18 +42,6 @@ function GroupDetailsForm(props: GroupDetailsProps) {
 		setTag(newGroup.tag);
 		setEditMode(false);
 		console.log("reset");
-	};
-
-	const deleteGroup = async () => {
-		try {
-			setEditMode(false);
-			const data = await deleteGroupById(group.id);
-			console.log(data);
-		} catch (error: any) {
-			setError(error.message);
-		} finally {
-			navigate("/");
-		}
 	};
 
 	const generateNewAvatar = async (e: FormEvent) => {
@@ -102,21 +90,13 @@ function GroupDetailsForm(props: GroupDetailsProps) {
 		}
 	};
 
-	const formAlertDialogInfo = {
-		triggerLabel: !group.id ? "Cancel" : "Delete",
-		alertTitle: !group.id ? "Do you want to cancel this action?" : "Do you want to delete this group?",
-		alertDescription: "This action cannot be undone. The contacts related to this group will lost their relationship to it.",
-		actionButtonLabel: !group.id ? "Yes, cancel" : "Yes, delete group",
-		actionButtonFunction: !group.id ? () => navigate("/") : deleteGroup,
-	};
-
 	if (error) return <ErrorBox message={error} />;
 	if (isLoading) return <Loader />;
 
 	return (
 		<>
-			<Form.Root className={style.formRoot}>
-				<div className={style.contactAvatar}>
+			<Form.Root className={"formRoot"}>
+				<div className={"contactAvatar"}>
 					<img
 						src={`${supabaseUrl}/storage/v1/object/public/avatars/${avatar}`}
 						alt={`${tag} Avatar`}
@@ -125,13 +105,13 @@ function GroupDetailsForm(props: GroupDetailsProps) {
 				</div>
 				<Form.Field
 					name='avatar'
-					className={style.formField}>
-					<div className={style.formInputContainer}>
-						<Form.Label className={style.formLabel}>Avatar</Form.Label>
+					className={"formField"}>
+					<div className={"formInputContainer"}>
+						<Form.Label className={"formLabel"}>Avatar</Form.Label>
 						<Form.Control asChild>
 							<Button
 								type='button'
-								className={style.toggle}
+								className={"toggle"}
 								onClick={(e) => generateNewAvatar(e)}
 								disabled={!!group.id && !editMode}
 								label={RepeatIcon}
@@ -142,19 +122,19 @@ function GroupDetailsForm(props: GroupDetailsProps) {
 
 				<Form.Field
 					name='tag'
-					className={style.formField}>
-					<div className={style.formMessagesContainer}>
+					className={"formField"}>
+					<div className={"formMessagesContainer"}>
 						<Form.Message
-							className={style.formMessage}
+							className={"formMessage"}
 							match='valueMissing'>
 							This field cannot be empty.
 						</Form.Message>
 					</div>
-					<div className={style.formInputContainer}>
-						<Form.Label className={style.formLabel}>#Tag</Form.Label>
+					<div className={"formInputContainer"}>
+						<Form.Label className={"formLabel"}>#Tag</Form.Label>
 						<Form.Control asChild>
 							<input
-								className={style.input}
+								className={"input"}
 								type='text'
 								value={tag}
 								onChange={(e) => {
@@ -167,44 +147,15 @@ function GroupDetailsForm(props: GroupDetailsProps) {
 						</Form.Control>
 					</div>
 				</Form.Field>
-
-				<div className={style.formButtons}>
-					{editMode ? (
-						<>
-							<Button
-								type='button'
-								onClick={handleReset}
-								label='Cancel'
-							/>
-							<Form.Submit asChild>
-								<Button
-									type='submit'
-									className={style.editPrimaryButton}
-									onClick={(e: FormEvent) => submitGroup(e)}
-									label='Save'
-								/>
-							</Form.Submit>
-						</>
-					) : (
-						<>
-							<FormAlertDialog
-								triggerLabel={formAlertDialogInfo.triggerLabel}
-								alertTitle={formAlertDialogInfo.alertTitle}
-								alertDescription={formAlertDialogInfo.alertDescription}
-								actionButtonLabel={formAlertDialogInfo.actionButtonLabel}
-								actionButtonFunction={formAlertDialogInfo.actionButtonFunction}
-							/>
-							<Form.Submit asChild>
-								<Button
-									type={!group.id ? "submit" : "button"}
-									className={style.formPrimaryButton}
-									onClick={!group.id ? (e: FormEvent) => submitGroup(e) : (e: FormEvent) => enterEditMode(e)}
-									label={!group.id ? "Create" : "Edit"}
-								/>
-							</Form.Submit>
-						</>
-					)}
-				</div>
+				<FormActions
+					editMode={editMode}
+					handleReset={handleReset}
+					submitGroup={submitGroup}
+					id={group.id}
+					enterEditMode={enterEditMode}
+					setEditMode={setEditMode}
+					setError={setError}
+				/>
 			</Form.Root>
 		</>
 	);
