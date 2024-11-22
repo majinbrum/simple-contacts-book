@@ -42,6 +42,24 @@ export interface FormTextFieldsProps {
 	disabled: boolean;
 }
 
+export interface FormFavouriteFieldProps {
+	onClick: () => void;
+	disabled: boolean;
+	favourite: boolean;
+}
+
+export interface FormTagFieldProps {
+	form: "group" | "contact";
+	tag: string;
+	setTag: React.Dispatch<React.SetStateAction<string>>;
+	disabled: boolean;
+}
+
+export interface FormAvatarFieldProps {
+	onClick: (e: FormEvent) => Promise<void>;
+	disabled: boolean;
+}
+
 export interface FormActionsProps {
 	editMode: boolean;
 	handleReset: () => void;

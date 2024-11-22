@@ -12,12 +12,12 @@ import { supabaseUrl } from "../../../../supabase/supabaseClient";
 import { createGroup, updateGroupById } from "../../../../supabase/groupsFunctions";
 import { generateRandomAvatar } from "../../../../supabase/functions";
 // Components
-import Button from "../../Atoms/Button/Button";
 import Loader from "../../Atoms/Loader/Loader";
 import ErrorBox from "../../Molecules/ErrorBox/ErrorBox";
 import FormActions from "../../Organisms/FormActions/FormActions";
 // Assets
-import { RepeatIcon } from "../../../assets/icons";
+import FormAvatarField from "../../Molecules/FormAvatarField/FormAvatarField";
+import FormTagField from "../../Molecules/FormTagField/FormTagField";
 
 function GroupDetailsForm(props: GroupDetailsProps) {
 	const { group } = props;
@@ -103,50 +103,16 @@ function GroupDetailsForm(props: GroupDetailsProps) {
 						loading='lazy'
 					/>
 				</div>
-				<Form.Field
-					name='avatar'
-					className={"formField"}>
-					<div className={"formInputContainer"}>
-						<Form.Label className={"formLabel"}>Avatar</Form.Label>
-						<Form.Control asChild>
-							<Button
-								type='button'
-								className={"toggle"}
-								onClick={(e) => generateNewAvatar(e)}
-								disabled={!!group.id && !editMode}
-								label={RepeatIcon}
-							/>
-						</Form.Control>
-					</div>
-				</Form.Field>
-
-				<Form.Field
-					name='tag'
-					className={"formField"}>
-					<div className={"formMessagesContainer"}>
-						<Form.Message
-							className={"formMessage"}
-							match='valueMissing'>
-							This field cannot be empty.
-						</Form.Message>
-					</div>
-					<div className={"formInputContainer"}>
-						<Form.Label className={"formLabel"}>#Tag</Form.Label>
-						<Form.Control asChild>
-							<input
-								className={"input"}
-								type='text'
-								value={tag}
-								onChange={(e) => {
-									setTag(e.target.value.trimStart());
-								}}
-								disabled={!!group.id && !editMode}
-								placeholder='family'
-								required
-							/>
-						</Form.Control>
-					</div>
-				</Form.Field>
+				<FormAvatarField
+					onClick={(e) => generateNewAvatar(e)}
+					disabled={!!group.id && !editMode}
+				/>
+				<FormTagField
+					form='group'
+					tag={tag}
+					setTag={setTag}
+					disabled={!!group.id && !editMode}
+				/>
 				<FormActions
 					editMode={editMode}
 					handleReset={handleReset}

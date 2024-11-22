@@ -5,30 +5,25 @@ import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // Radix UI components
 import * as Form from "@radix-ui/react-form";
-import * as Toggle from "@radix-ui/react-toggle";
 // Interfaces
 import { ContactDetailsProps } from "../../../types/types";
 // Components
-import Button from "../../Atoms/Button/Button";
 import ContactCard from "../../Atoms/ContactCard/ContactCard";
 import Loader from "../../Atoms/Loader/Loader";
-import InputSelect from "../../Atoms/InputSelect/InputSelect";
 import ErrorBox from "../../Molecules/ErrorBox/ErrorBox";
 import FormActions from "../../Organisms/FormActions/FormActions";
+import FormTextFields from "../../Molecules/FormTextFields/FormTextFields";
+import FormAvatarField from "../../Molecules/FormAvatarField/FormAvatarField";
+import FormTagField from "../../Molecules/FormTagField/FormTagField";
+import FormFavouriteField from "../../Molecules/FormFavouriteField/FormFavouriteField";
 // Supabase
 import { supabaseUrl } from "../../../../supabase/supabaseClient";
 import { createContact, updateContactById } from "../../../../supabase/contactsFunctions";
 import { generateRandomAvatar } from "../../../../supabase/functions";
-// Context
-import { useGroupsContext } from "../../../providers/GroupsContext";
-// Assets
-import { FilledStarIcon, RepeatIcon, StarIcon } from "../../../assets/icons";
-import FormTextFields from "../../Molecules/FormTextFields/FormTextFields";
 
 function ContactDetailsForm(props: ContactDetailsProps) {
 	const { contact } = props;
 	const navigate = useNavigate();
-	const groups = useGroupsContext();
 
 	const [newContact, setNewContact] = useState(contact);
 
@@ -131,59 +126,26 @@ function ContactDetailsForm(props: ContactDetailsProps) {
 						loading='lazy'
 					/>
 				</div>
-				<Form.Field
-					name='avatar'
-					className={"formField"}>
-					<div className={"formInputContainer"}>
-						<Form.Label className={"formLabel"}>Avatar</Form.Label>
-						<Form.Control asChild>
-							<Button
-								type='button'
-								className={"toggle"}
-								onClick={(e) => generateNewAvatar(e)}
-								disabled={!!contact.id && !editMode}
-								label={RepeatIcon}
-							/>
-						</Form.Control>
-					</div>
-				</Form.Field>
+				<FormAvatarField
+					onClick={(e) => generateNewAvatar(e)}
+					disabled={!!contact.id && !editMode}
+				/>
 				<FormTextFields
 					editMode={editMode}
 					formFields={formFields}
 					disabled={!!contact.id && !editMode}
 				/>
-				<Form.Field
-					name='tag'
-					className={"formField"}>
-					<div className={"formInputContainer formInputSelect"}>
-						<Form.Label className={"formLabel"}>#Tag</Form.Label>
-						<Form.Control asChild>
-							<InputSelect
-								name='tag'
-								valuesGroups={groups}
-								value={tag}
-								setValue={setTag}
-								disabled={!!contact.id && !editMode}
-							/>
-						</Form.Control>
-					</div>
-				</Form.Field>
-				<Form.Field
-					name='favourite'
-					className={"formField"}>
-					<div className={"formInputContainer"}>
-						<Form.Label className={"formLabel"}>Favourite</Form.Label>
-						<Form.Control asChild>
-							<Toggle.Root
-								className={"toggle"}
-								aria-label='Toggle favourite'
-								onClick={() => setFavourite(!favourite)}
-								disabled={!!contact.id && !editMode}>
-								{favourite ? FilledStarIcon : StarIcon}
-							</Toggle.Root>
-						</Form.Control>
-					</div>
-				</Form.Field>
+				<FormTagField
+					form='contact'
+					tag={tag}
+					setTag={setTag}
+					disabled={!!contact.id && !editMode}
+				/>
+				<FormFavouriteField
+					onClick={() => setFavourite(!favourite)}
+					disabled={!!contact.id && !editMode}
+					favourite={favourite}
+				/>
 				<FormActions
 					editMode={editMode}
 					handleReset={handleReset}
