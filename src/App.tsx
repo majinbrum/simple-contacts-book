@@ -28,9 +28,8 @@ const App = () => {
 		const data = getGroups();
 		if (typeof data === "string") {
 			setError(data);
-		} else {
-			setIsLoading(false);
 		}
+		setIsLoading(false);
 	}, []);
 
 	useEffect(() => {
@@ -38,7 +37,7 @@ const App = () => {
 	}, [path]);
 
 	if (error) return <ErrorBox message={error} />;
-	if (isLoading) return <Loader />;
+	if (groups.length < 1 || isLoading) return <Loader />;
 
 	return (
 		<>
