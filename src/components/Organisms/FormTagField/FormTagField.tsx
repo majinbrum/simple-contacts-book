@@ -1,7 +1,7 @@
 // Radix UI components
 import * as Form from "@radix-ui/react-form";
 // Components
-import InputSelect from "../../Atoms/InputSelect/InputSelect";
+import InputSelect from "../../Molecules/InputSelect/InputSelect";
 // Interfaces
 import { FormTagFieldProps } from "../../../types/types";
 // Context

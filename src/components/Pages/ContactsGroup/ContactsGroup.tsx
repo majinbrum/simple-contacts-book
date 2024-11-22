@@ -7,7 +7,7 @@ import { Link, useParams } from "react-router-dom";
 import SearchBox from "../../Organisms/SearchBox/SearchBox";
 import ContactsList from "../../Templates/ContactsList/ContactsList";
 import Loader from "../../Atoms/Loader/Loader";
-import ErrorBox from "../../Molecules/ErrorBox/ErrorBox";
+import ErrorBox from "../../Atoms/ErrorBox/ErrorBox";
 // Context
 import { FilterContext } from "../../../providers/FilterContext";
 import { useSetGroupsContext } from "../../../providers/GroupsContext";

@@ -13,11 +13,11 @@ import { createGroup, updateGroupById } from "../../../../supabase/groupsFunctio
 import { generateRandomAvatar } from "../../../../supabase/functions";
 // Components
 import Loader from "../../Atoms/Loader/Loader";
-import ErrorBox from "../../Molecules/ErrorBox/ErrorBox";
+import ErrorBox from "../../Atoms/ErrorBox/ErrorBox";
 import FormActions from "../../Organisms/FormActions/FormActions";
 // Assets
 import FormAvatarField from "../../Molecules/FormAvatarField/FormAvatarField";
-import FormTagField from "../../Molecules/FormTagField/FormTagField";
+import FormTagField from "../../Organisms/FormTagField/FormTagField";
 
 function GroupDetailsForm(props: GroupDetailsProps) {
 	const { group } = props;

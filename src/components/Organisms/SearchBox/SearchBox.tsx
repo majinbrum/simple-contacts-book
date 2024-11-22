@@ -4,7 +4,7 @@ import { useContext } from "react";
 import style from "./SearchBox.module.css";
 // Components
 import InputText from "../../Atoms/InputText/InputText";
-import InputSelect from "../../Atoms/InputSelect/InputSelect";
+import InputSelect from "../../Molecules/InputSelect/InputSelect";
 // Context
 import { FilterContext } from "../../../providers/FilterContext";
 // Assets

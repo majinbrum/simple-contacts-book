@@ -9,7 +9,7 @@ import { supabaseUrl } from "../supabase/supabaseClient";
 import { useGroupsContext, useSetGroupsContext } from "./providers/GroupsContext";
 // Components
 import Loader from "./components/Atoms/Loader/Loader";
-import ErrorBox from "./components/Molecules/ErrorBox/ErrorBox";
+import ErrorBox from "./components/Atoms/ErrorBox/ErrorBox";
 // Assets
 import { AddIcon } from "./assets/icons";
 

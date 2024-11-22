@@ -10,11 +10,11 @@ import { ContactDetailsProps } from "../../../types/types";
 // Components
 import ContactCard from "../../Atoms/ContactCard/ContactCard";
 import Loader from "../../Atoms/Loader/Loader";
-import ErrorBox from "../../Molecules/ErrorBox/ErrorBox";
+import ErrorBox from "../../Atoms/ErrorBox/ErrorBox";
 import FormActions from "../../Organisms/FormActions/FormActions";
 import FormTextFields from "../../Molecules/FormTextFields/FormTextFields";
 import FormAvatarField from "../../Molecules/FormAvatarField/FormAvatarField";
-import FormTagField from "../../Molecules/FormTagField/FormTagField";
+import FormTagField from "../../Organisms/FormTagField/FormTagField";
 import FormFavouriteField from "../../Molecules/FormFavouriteField/FormFavouriteField";
 // Supabase
 import { supabaseUrl } from "../../../../supabase/supabaseClient";

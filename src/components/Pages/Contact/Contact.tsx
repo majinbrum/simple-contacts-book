@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 // Components
 import ContactDetailsForm from "../../Templates/DetailsForm/ContactDetailsForm";
 import Loader from "../../Atoms/Loader/Loader";
-import ErrorBox from "../../Molecules/ErrorBox/ErrorBox";
+import ErrorBox from "../../Atoms/ErrorBox/ErrorBox";
 // Interfaces
 import { IContact } from "../../../types/databaseTypes";
 // Supabase
