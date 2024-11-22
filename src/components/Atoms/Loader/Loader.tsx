@@ -1,5 +1,7 @@
-import { LoaderIcon } from "../../../assets/icons";
+// CSS
 import style from "./Loader.module.css";
+// Assets
+import { LoaderIcon } from "../../../assets/icons";
 
 const Loader = () => {
 	return (

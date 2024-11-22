@@ -2,10 +2,8 @@ import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { IGroup } from "../types/databaseTypes";
 import { readGroups } from "../../supabase/groupsFunctions";
 
-type ISetGroups = () => Promise<void>;
-
 export const GroupsContext = createContext<IGroup[]>([]);
-export const SetGroupsContext = createContext<ISetGroups>(() => Promise.resolve());
+export const SetGroupsContext = createContext<() => Promise<void>>(() => Promise.resolve());
 
 function GroupsProvider({ children }: PropsWithChildren) {
 	const [groups, setGroups] = useState<IGroup[]>([]);

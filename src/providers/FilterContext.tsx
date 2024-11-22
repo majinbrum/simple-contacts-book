@@ -1,22 +1,22 @@
-import { createContext, Dispatch, PropsWithChildren, SetStateAction, useContext, useState } from "react";
+import { createContext, Dispatch, PropsWithChildren, SetStateAction, useState } from "react";
 
-type IFilter = string;
-type ISetFilter = Dispatch<SetStateAction<string>>;
+const defaultFilterContext = {
+	filter: "",
+	setFilter: (() => {}) as Dispatch<SetStateAction<string>>,
+	order: "",
+	setOrder: (() => {}) as Dispatch<SetStateAction<string>>,
+	sortBy: "",
+	setSortBy: (() => {}) as Dispatch<SetStateAction<string>>,
+};
 
-export const FilterContext = createContext<IFilter>("");
-export const SetFilterContext = createContext<ISetFilter>(() => {});
+export const FilterContext = createContext(defaultFilterContext);
 
 function FilterProvider({ children }: PropsWithChildren) {
-	const [filter, setFilter] = useState<IFilter>("");
+	const [filter, setFilter] = useState("");
+	const [order, setOrder] = useState("ascending");
+	const [sortBy, setSortBy] = useState("name");
 
-	return (
-		<FilterContext.Provider value={filter}>
-			<SetFilterContext.Provider value={setFilter}>{children}</SetFilterContext.Provider>
-		</FilterContext.Provider>
-	);
+	return <FilterContext.Provider value={{ filter, setFilter, order, setOrder, sortBy, setSortBy }}>{children}</FilterContext.Provider>;
 }
-
-export const useFilterContext = () => useContext(FilterContext);
-export const useSetFilterContext = () => useContext(SetFilterContext);
 
 export default FilterProvider;

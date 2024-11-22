@@ -1,20 +1,26 @@
-import { useParams } from "react-router-dom";
+// CSS
 import style from "./Contact.module.css";
-import ContactDetailsForm from "../../Templates/DetailsForm/ContactDetailsForm";
+// React
 import { useEffect, useState } from "react";
-import { IContact } from "../../../types/databaseTypes";
-import { readContactById } from "../../../../supabase/contactsFunctions";
+import { useParams } from "react-router-dom";
+// Components
+import ContactDetailsForm from "../../Templates/DetailsForm/ContactDetailsForm";
 import Loader from "../../Atoms/Loader/Loader";
 import ErrorBox from "../../Molecules/ErrorBox/ErrorBox";
+// Interfaces
+import { IContact } from "../../../types/databaseTypes";
+// Supabase
+import { readContactById } from "../../../../supabase/contactsFunctions";
 
 const defaultContact = {
 	avatar: "avatars/avatar1.png",
 	favourite: false,
+	tag: null,
 };
 
 const Contact = () => {
 	const { id } = useParams();
-	const [contact, setContact] = useState<IContact>(defaultContact as IContact);
+	const [contact, setContact] = useState<IContact | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string>();
 
@@ -39,9 +45,8 @@ const Contact = () => {
 		}
 	}, []);
 
-	if (isLoading || (!contact && !error)) return <Loader />;
-
 	if (error) return <ErrorBox message={error} />;
+	if (isLoading || !contact) return <Loader />;
 
 	return (
 		<div className={style.contactContainer}>

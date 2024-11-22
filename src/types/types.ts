@@ -28,6 +28,49 @@ export interface InputTextProps {
 	icon?: ReactElement;
 }
 
+export interface FormTextFieldsProps {
+	editMode: boolean;
+	formFields: {
+		name: string;
+		label: string;
+		value: string;
+		setValue: Dispatch<SetStateAction<string>>;
+		type: string;
+		placeholder: string;
+		pattern?: string;
+	}[];
+	disabled: boolean;
+}
+
+export interface FormFavouriteFieldProps {
+	onClick: () => void;
+	disabled: boolean;
+	favourite: boolean;
+}
+
+export interface FormTagFieldProps {
+	form: "group" | "contact";
+	tag: string;
+	setTag: React.Dispatch<React.SetStateAction<string>>;
+	disabled: boolean;
+}
+
+export interface FormAvatarFieldProps {
+	onClick: (e: FormEvent) => Promise<void>;
+	disabled: boolean;
+}
+
+export interface FormActionsProps {
+	editMode: boolean;
+	handleReset: () => void;
+	submitContact?: (e: FormEvent) => Promise<void>;
+	submitGroup?: (e: FormEvent) => Promise<void>;
+	id: string;
+	enterEditMode: (e: FormEvent) => void;
+	setEditMode: Dispatch<SetStateAction<boolean>>;
+	setError: Dispatch<SetStateAction<string | undefined>>;
+}
+
 export interface ContactsListProps {
 	contacts: IContact[];
 	title: string;

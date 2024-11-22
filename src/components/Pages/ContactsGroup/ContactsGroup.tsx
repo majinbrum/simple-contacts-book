@@ -1,77 +1,37 @@
-import { Link, useParams } from "react-router-dom";
+// CSS
 import style from "./ContactsGroup.module.css";
+// React
+import { useContext, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+// Components
 import SearchBox from "../../Organisms/SearchBox/SearchBox";
 import ContactsList from "../../Templates/ContactsList/ContactsList";
-import { useOrderContext } from "../../../providers/OrderContext";
-import { useEffect, useState } from "react";
-import { useFilterContext } from "../../../providers/FilterContext";
-import { useContactsContext, useSetContactsContext } from "../../../providers/ContactsContext";
-import { useSortByContext } from "../../../providers/SortByContext";
 import Loader from "../../Atoms/Loader/Loader";
-import { IFilteredContacts } from "../../../types/types";
-import { readContacts } from "../../../../supabase/contactsFunctions";
-import { AddIcon, SearchIcon } from "../../../assets/icons";
 import ErrorBox from "../../Molecules/ErrorBox/ErrorBox";
-import { useGroupsContext, useSetGroupsContext } from "../../../providers/GroupsContext";
+// Context
+import { FilterContext } from "../../../providers/FilterContext";
+import { useSetGroupsContext } from "../../../providers/GroupsContext";
+// Interfaces
+import { IContact } from "../../../types/databaseTypes";
+import { IFilteredContacts } from "../../../types/types";
+// Supabase
+import { readContacts } from "../../../../supabase/contactsFunctions";
+// Assets
+import { AddIcon, SearchIcon } from "../../../assets/icons";
 
 const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
-const defaultFilteredContacts = {
-	contacts: [],
-};
-
 const ContactsGroup = () => {
 	const { group } = useParams();
-	const setContacts = useSetContactsContext();
-	const groups = useGroupsContext();
 	const getGroups = useSetGroupsContext();
-	const contacts = useContactsContext();
-	const filter = useFilterContext();
-	const sortBy = useSortByContext();
-	const order = useOrderContext();
+	const { filter, sortBy, order } = useContext(FilterContext);
 
+	const [contacts, setContacts] = useState<IContact[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string>();
-	const [filteredContacts, setFilteredContacts] = useState<IFilteredContacts>(defaultFilteredContacts);
+	const [filteredContacts, setFilteredContacts] = useState<IFilteredContacts | null>(null);
 
-	const getContacts = async () => {
-		if (!group) return;
-		try {
-			setIsLoading(true);
-			const data = await readContacts(group, sortBy, order);
-			setContacts(data);
-		} catch (error: any) {
-			setError(error.message);
-			console.dir(error);
-			console.log(error);
-		} finally {
-			setIsLoading(false);
-		}
-	};
-
-	useEffect(() => {
-		setIsLoading(true);
-		const data = getGroups();
-		if (typeof data === "string") {
-			setError(data);
-		} else {
-			setIsLoading(false);
-		}
-	}, []);
-
-	useEffect(() => {
-		console.log(groups);
-		console.log(group);
-	}, [groups]);
-
-	useEffect(() => {
-		setIsLoading(true);
-		getContacts();
-		setIsLoading(false);
-	}, [group]);
-
-	const renderLists = () => {
-		setIsLoading(true);
+	const renderLists = (contacts: IContact[]) => {
 		const temp: IFilteredContacts = {};
 
 		temp["FAVOURITES"] = [];
@@ -93,16 +53,45 @@ const ContactsGroup = () => {
 			});
 
 		setFilteredContacts(temp);
-		setIsLoading(false);
+	};
+
+	const getAndRenderContacts = async () => {
+		if (!group) return;
+		try {
+			setIsLoading(true);
+			const data = await readContacts(group, sortBy, order);
+			setContacts(data);
+			renderLists(data);
+		} catch (error: any) {
+			setError(error.message);
+			console.dir(error);
+			console.log(error);
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	useEffect(() => {
-		renderLists();
-	}, [contacts, filter, sortBy, order]);
+		setIsLoading(true);
+		const data = getGroups();
+		if (typeof data === "string") {
+			setError(data);
+		} else {
+			setIsLoading(false);
+		}
+	}, []);
 
-	if (isLoading) return <Loader />;
+	useEffect(() => {
+		setFilteredContacts(null);
+		getAndRenderContacts();
+	}, [group]);
+
+	useEffect(() => {
+		renderLists(contacts);
+	}, [filter, sortBy, order]);
 
 	if (error) return <ErrorBox message={error} />;
+	if (isLoading || !filteredContacts) return <Loader />;
 
 	return (
 		<>

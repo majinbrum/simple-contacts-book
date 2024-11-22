@@ -1,35 +1,39 @@
-import * as Form from "@radix-ui/react-form";
-import * as Toggle from "@radix-ui/react-toggle";
-import { ContactDetailsProps } from "../../../types/types";
-import style from "./DetailsForm.module.css";
+// CSS
+import "./DetailsForm.css";
+// React
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import FormAlertDialog from "../../Molecules/FormAlertDialog/FormAlertDialog";
-import Button from "../../Atoms/Button/Button";
-import { createContact, deleteContactById, updateContactById } from "../../../../supabase/contactsFunctions";
-import { supabaseUrl } from "../../../../supabase/supabaseClient";
+// Radix UI components
+import * as Form from "@radix-ui/react-form";
+// Interfaces
+import { ContactDetailsProps } from "../../../types/types";
+// Components
 import ContactCard from "../../Atoms/ContactCard/ContactCard";
 import Loader from "../../Atoms/Loader/Loader";
-import { generateRandomAvatar } from "../../../../supabase/functions";
-import { CopyIcon, EnvelopeIcon, FilledStarIcon, RepeatIcon, StarIcon } from "../../../assets/icons";
-import InputSelect from "../../Atoms/InputSelect/InputSelect";
-import { useGroupsContext } from "../../../providers/GroupsContext";
 import ErrorBox from "../../Molecules/ErrorBox/ErrorBox";
+import FormActions from "../../Organisms/FormActions/FormActions";
+import FormTextFields from "../../Molecules/FormTextFields/FormTextFields";
+import FormAvatarField from "../../Molecules/FormAvatarField/FormAvatarField";
+import FormTagField from "../../Molecules/FormTagField/FormTagField";
+import FormFavouriteField from "../../Molecules/FormFavouriteField/FormFavouriteField";
+// Supabase
+import { supabaseUrl } from "../../../../supabase/supabaseClient";
+import { createContact, updateContactById } from "../../../../supabase/contactsFunctions";
+import { generateRandomAvatar } from "../../../../supabase/functions";
 
 function ContactDetailsForm(props: ContactDetailsProps) {
-	const groups = useGroupsContext();
-	const navigate = useNavigate();
 	const { contact } = props;
-
-	const [avatar, setAvatar] = useState(contact.avatar);
-	const [name, setName] = useState(contact.name);
-	const [surname, setSurname] = useState(contact.surname);
-	const [phone, setPhone] = useState(contact.phone);
-	const [email, setEmail] = useState(contact.email);
-	const [tag, setTag] = useState(contact.tag ? contact.tag : "None");
-	const [favourite, setFavourite] = useState(contact.favourite);
+	const navigate = useNavigate();
 
 	const [newContact, setNewContact] = useState(contact);
+
+	const [avatar, setAvatar] = useState(newContact.avatar);
+	const [name, setName] = useState(newContact.name);
+	const [surname, setSurname] = useState(newContact.surname);
+	const [phone, setPhone] = useState(newContact.phone);
+	const [email, setEmail] = useState(newContact.email);
+	const [tag, setTag] = useState(newContact.tag || "None");
+	const [favourite, setFavourite] = useState(newContact.favourite);
 
 	const [editMode, setEditMode] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
@@ -48,33 +52,21 @@ function ContactDetailsForm(props: ContactDetailsProps) {
 	};
 
 	const handleReset = () => {
-		setAvatar(contact.avatar);
-		setName(contact.name);
-		setSurname(contact.surname);
-		setPhone(contact.phone);
-		setEmail(contact.email);
-		setFavourite(contact.favourite);
-		setTag(contact.tag || "None");
+		setAvatar(newContact.avatar);
+		setName(newContact.name);
+		setSurname(newContact.surname);
+		setPhone(newContact.phone);
+		setEmail(newContact.email);
+		setFavourite(newContact.favourite);
+		setTag(newContact.tag || "None");
 		setEditMode(false);
 		console.log("reset");
-	};
-
-	const deleteContact = async () => {
-		try {
-			setEditMode(false);
-			const data = await deleteContactById(contact.id);
-			console.log(data);
-		} catch (error: any) {
-			setError(error.message);
-		} finally {
-			navigate("/");
-		}
 	};
 
 	const generateNewAvatar = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
-			const newAvatarPath = await generateRandomAvatar(avatar);
+			const newAvatarPath = await generateRandomAvatar(newContact.avatar);
 			setAvatar(newAvatarPath);
 		} catch (error: any) {
 			setError(error.message);
@@ -84,232 +76,85 @@ function ContactDetailsForm(props: ContactDetailsProps) {
 	const validateForm = (e: FormEvent) => {
 		const target = e.target as HTMLElement;
 		const form = target.closest("form");
-
 		if (form?.checkValidity()) {
-			setNewContact({ ...contact, avatar, name, surname, phone, email, tag: tag === "None" ? null : tag, favourite });
 			return true;
 		} else {
-			setIsLoading(false);
 			return false;
 		}
 	};
 
-	const updateContact = async (e: FormEvent) => {
-		setIsLoading(true);
+	const submitContact = async (e: FormEvent) => {
 		e.preventDefault();
-		const formValidation = validateForm(e);
-		if (formValidation == true) {
+		setIsLoading(true);
+		if (validateForm(e)) {
+			const tempNewContact = { ...contact, avatar, name, surname, phone, email, tag: tag === "None" ? null : tag, favourite };
+			setNewContact(tempNewContact);
 			try {
-				const data = await updateContactById(contact.id, newContact);
-				console.log(data);
+				if (contact.id) {
+					const data = await updateContactById(contact.id, tempNewContact);
+					console.log(data);
+				} else {
+					const data = await createContact(tempNewContact);
+					console.log(data);
+				}
 			} catch (error: any) {
 				setError(error.message);
 			} finally {
 				setEditMode(false);
 				setIsLoading(false);
+				!contact.id && navigate("/");
 			}
 		} else {
 			setIsLoading(false);
-			return;
 		}
 	};
-
-	const createNewContact = async (e: FormEvent) => {
-		setIsLoading(true);
-		e.preventDefault();
-		const formValidation = validateForm(e);
-
-		if (formValidation == true) {
-			try {
-				const data = await createContact(newContact);
-				console.log(data);
-			} catch (error: any) {
-				setError(error.message);
-			} finally {
-				setEditMode(false);
-				setIsLoading(false);
-				navigate("/");
-			}
-		} else {
-			setIsLoading(false);
-			return;
-		}
-	};
-
-	const formAlertDialogInfo = {
-		triggerLabel: !contact.id ? "Cancel" : "Delete",
-		alertTitle: !contact.id ? "Do you want to cancel this action?" : "Do you want to delete this contact?",
-		alertDescription: "This action cannot be undone. Are you sure you want to delete these informations permanently?",
-		actionButtonLabel: !contact.id ? "Yes, cancel" : "Yes, delete contact",
-		actionButtonFunction: !contact.id ? () => navigate("/") : deleteContact,
-	};
-
-	if (isLoading) return <Loader />;
 
 	if (error) return <ErrorBox message={error} />;
+	if (isLoading) return <Loader />;
 
 	return (
 		<>
 			<ContactCard
-				contact={{ ...contact, avatar, name, surname, phone, email, tag, favourite }}
+				contact={{ ...newContact, avatar, name, surname, phone, email, tag, favourite }}
 				listType='alphabetical'
 			/>
-			<Form.Root className={style.formRoot}>
-				<div className={style.contactAvatar}>
+			<Form.Root className={"formRoot"}>
+				<div className={"contactAvatar"}>
 					<img
 						src={`${supabaseUrl}/storage/v1/object/public/avatars/${avatar}`}
 						alt={`${name} Avatar`}
 						loading='lazy'
 					/>
 				</div>
-				<Form.Field
-					name='avatar'
-					className={style.formField}>
-					<div className={style.formInputContainer}>
-						<Form.Label className={style.formLabel}>Avatar</Form.Label>
-						<Form.Control asChild>
-							<Button
-								type='button'
-								className={style.toggle}
-								onClick={(e) => generateNewAvatar(e)}
-								disabled={!!contact.id && !editMode}
-								label={RepeatIcon}
-							/>
-						</Form.Control>
-					</div>
-				</Form.Field>
-				{formFields.map((field, i) => (
-					<Form.Field
-						key={i}
-						name={field.name}
-						className={style.formField}>
-						{editMode && (
-							<div className={style.formMessagesContainer}>
-								<Form.Message
-									className={style.formMessage}
-									match='valueMissing'>
-									This field cannot be empty.
-								</Form.Message>
-								<Form.Message
-									className={style.formMessage}
-									match={"typeMismatch"}>
-									Please provide a valid email.
-								</Form.Message>
-								<Form.Message
-									className={style.formMessage}
-									match={"patternMismatch"}>
-									The phone number can only contain numbers and symbols.
-								</Form.Message>
-							</div>
-						)}
-						<div className={style.formInputContainer}>
-							<Form.Label className={style.formLabel}>{field.label}</Form.Label>
-							<div className={style.formControl}>
-								<Form.Control asChild>
-									<input
-										className={style.input}
-										type={field.type}
-										value={field.value == null ? "" : field.value}
-										onChange={(e) => {
-											field.setValue(e.target.value.trimStart());
-										}}
-										pattern={field.pattern}
-										disabled={!!contact.id && !editMode}
-										placeholder={field.placeholder}
-										required
-									/>
-								</Form.Control>
-								{field.name == "phone" && (
-									<Button
-										type='button'
-										label={CopyIcon}
-										className={style.buttonLink}
-										onClick={() => navigator.clipboard.writeText(contact.phone)}
-										disabled={editMode}
-									/>
-								)}
-								{field.name == "email" && (
-									<a
-										href={`mailto:${contact.email}`}
-										target='_blank'
-										className={`${style.buttonLink} ${editMode && style.buttonLinkDisabled}`}>
-										{EnvelopeIcon}
-									</a>
-								)}
-							</div>
-						</div>
-					</Form.Field>
-				))}
-				<Form.Field
-					name='tag'
-					className={style.formField}>
-					<div className={`${style.formInputContainer} ${style.formInputSelect}`}>
-						<Form.Label className={style.formLabel}>#Tag</Form.Label>
-						<Form.Control asChild>
-							<InputSelect
-								name='tag'
-								valuesGroups={groups}
-								value={tag}
-								setValue={setTag}
-								disabled={!!contact.id && !editMode}
-							/>
-						</Form.Control>
-					</div>
-				</Form.Field>
-				<Form.Field
-					name='favourite'
-					className={style.formField}>
-					<div className={style.formInputContainer}>
-						<Form.Label className={style.formLabel}>Favourite</Form.Label>
-						<Form.Control asChild>
-							<Toggle.Root
-								className={style.toggle}
-								aria-label='Toggle favourite'
-								onClick={() => setFavourite(!favourite)}
-								disabled={!!contact.id && !editMode}>
-								{favourite ? FilledStarIcon : StarIcon}
-							</Toggle.Root>
-						</Form.Control>
-					</div>
-				</Form.Field>
-
-				<div className={style.formButtons}>
-					{editMode ? (
-						<>
-							<Button
-								type='button'
-								onClick={handleReset}
-								label='Cancel'
-							/>
-							<Form.Submit asChild>
-								<Button
-									type='submit'
-									className={style.editPrimaryButton}
-									onClick={(e: FormEvent) => updateContact(e)}
-									label='Save'
-								/>
-							</Form.Submit>
-						</>
-					) : (
-						<>
-							<FormAlertDialog
-								triggerLabel={formAlertDialogInfo.triggerLabel}
-								alertTitle={formAlertDialogInfo.alertTitle}
-								alertDescription={formAlertDialogInfo.alertDescription}
-								actionButtonLabel={formAlertDialogInfo.actionButtonLabel}
-								actionButtonFunction={formAlertDialogInfo.actionButtonFunction}
-							/>
-							<Form.Submit asChild>
-								<Button
-									type={!contact.id ? "submit" : "button"}
-									className={style.formPrimaryButton}
-									onClick={!contact.id ? (e: FormEvent) => createNewContact(e) : (e: FormEvent) => enterEditMode(e)}
-									label={!contact.id ? "Create" : "Edit"}
-								/>
-							</Form.Submit>
-						</>
-					)}
-				</div>
+				<FormAvatarField
+					onClick={(e) => generateNewAvatar(e)}
+					disabled={!!contact.id && !editMode}
+				/>
+				<FormTextFields
+					editMode={editMode}
+					formFields={formFields}
+					disabled={!!contact.id && !editMode}
+				/>
+				<FormTagField
+					form='contact'
+					tag={tag}
+					setTag={setTag}
+					disabled={!!contact.id && !editMode}
+				/>
+				<FormFavouriteField
+					onClick={() => setFavourite(!favourite)}
+					disabled={!!contact.id && !editMode}
+					favourite={favourite}
+				/>
+				<FormActions
+					editMode={editMode}
+					handleReset={handleReset}
+					submitContact={submitContact}
+					id={contact.id}
+					enterEditMode={enterEditMode}
+					setEditMode={setEditMode}
+					setError={setError}
+				/>
 			</Form.Root>
 		</>
 	);

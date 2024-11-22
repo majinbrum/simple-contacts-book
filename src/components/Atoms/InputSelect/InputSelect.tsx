@@ -1,6 +1,10 @@
+// CSS
 import style from "./InputSelect.module.css";
+// Radix UI Component
 import * as Select from "@radix-ui/react-select";
+// Interfaces
 import { InputSelectProps } from "../../../types/types";
+// Assets
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "../../../assets/icons";
 
 const InputSelect = (props: InputSelectProps) => {

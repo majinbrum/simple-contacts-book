@@ -1,3 +1,4 @@
+// Interface
 import { ButtonProps } from "../../../types/types";
 
 const Button = (props: ButtonProps) => {

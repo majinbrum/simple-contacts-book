@@ -1,11 +1,16 @@
-import { useParams } from "react-router-dom";
+// CSS
 import style from "./Group.module.css";
+// React
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+// Interfaces
 import { IGroup } from "../../../types/databaseTypes";
+// Components
 import Loader from "../../Atoms/Loader/Loader";
 import GroupDetailsForm from "../../Templates/DetailsForm/GroupDetailsForm";
-import { readGroupById } from "../../../../supabase/groupsFunctions";
 import ErrorBox from "../../Molecules/ErrorBox/ErrorBox";
+// Supabase
+import { readGroupById } from "../../../../supabase/groupsFunctions";
 
 const defaultGroup = {
 	avatar: "avatars/avatar1.png",
@@ -13,7 +18,7 @@ const defaultGroup = {
 
 const Group = () => {
 	const { id } = useParams();
-	const [group, setGroup] = useState<IGroup>(defaultGroup as IGroup);
+	const [group, setGroup] = useState<IGroup | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string>();
 
@@ -38,9 +43,8 @@ const Group = () => {
 		}
 	}, []);
 
-	if (isLoading || (!group && !error)) return <Loader />;
-
 	if (error) return <ErrorBox message={error} />;
+	if (isLoading || !group) return <Loader />;
 
 	return (
 		<div className={style.contactContainer}>
