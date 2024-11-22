@@ -11,8 +11,6 @@ import Contact from "./components/Pages/Contact/Contact.tsx";
 import ContactsGroup from "./components/Pages/ContactsGroup/ContactsGroup.tsx";
 import Group from "./components/Pages/Group/Group.tsx";
 // Context
-import SortByProvider from "./providers/SortByContext.tsx";
-import OrderProvider from "./providers/OrderContext.tsx";
 import FilterProvider from "./providers/FilterContext.tsx";
 import GroupsProvider from "./providers/GroupsContext.tsx";
 
@@ -57,13 +55,9 @@ createRoot(document.getElementById("root")!).render(
 	<StrictMode>
 		{/*<App />*/}
 		<FilterProvider>
-			<SortByProvider>
-				<OrderProvider>
-					<GroupsProvider>
-						<RouterProvider router={router} />
-					</GroupsProvider>
-				</OrderProvider>
-			</SortByProvider>
+			<GroupsProvider>
+				<RouterProvider router={router} />
+			</GroupsProvider>
 		</FilterProvider>
 	</StrictMode>
 );

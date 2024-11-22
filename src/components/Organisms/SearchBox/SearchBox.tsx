@@ -1,23 +1,18 @@
+// React
+import { useContext } from "react";
 // CSS
 import style from "./SearchBox.module.css";
 // Components
 import InputText from "../../Atoms/InputText/InputText";
 import InputSelect from "../../Atoms/InputSelect/InputSelect";
 // Context
-import { useFilterContext, useSetFilterContext } from "../../../providers/FilterContext";
-import { useSetSortByContext, useSortByContext } from "../../../providers/SortByContext";
-import { useOrderContext, useSetOrderContext } from "../../../providers/OrderContext";
+import { FilterContext } from "../../../providers/FilterContext";
 // Assets
 import { orderData, sortByData } from "../../../assets/sort";
 import { SearchIcon } from "../../../assets/icons";
 
 const SearchBox = () => {
-	const filter = useFilterContext();
-	const setFilter = useSetFilterContext();
-	const sortBy = useSortByContext();
-	const setSortBy = useSetSortByContext();
-	const order = useOrderContext();
-	const setOrder = useSetOrderContext();
+	const { filter, setFilter, sortBy, setSortBy, order, setOrder } = useContext(FilterContext);
 
 	return (
 		<div className={style.searchBox}>

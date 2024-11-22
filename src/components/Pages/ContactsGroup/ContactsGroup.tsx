@@ -1,7 +1,7 @@
 // CSS
 import style from "./ContactsGroup.module.css";
 // React
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 // Components
 import SearchBox from "../../Organisms/SearchBox/SearchBox";
@@ -9,9 +9,7 @@ import ContactsList from "../../Templates/ContactsList/ContactsList";
 import Loader from "../../Atoms/Loader/Loader";
 import ErrorBox from "../../Molecules/ErrorBox/ErrorBox";
 // Context
-import { useOrderContext } from "../../../providers/OrderContext";
-import { useFilterContext } from "../../../providers/FilterContext";
-import { useSortByContext } from "../../../providers/SortByContext";
+import { FilterContext } from "../../../providers/FilterContext";
 import { useSetGroupsContext } from "../../../providers/GroupsContext";
 // Interfaces
 import { IContact } from "../../../types/databaseTypes";
@@ -26,9 +24,7 @@ const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M
 const ContactsGroup = () => {
 	const { group } = useParams();
 	const getGroups = useSetGroupsContext();
-	const filter = useFilterContext();
-	const sortBy = useSortByContext();
-	const order = useOrderContext();
+	const { filter, sortBy, order } = useContext(FilterContext);
 
 	const [contacts, setContacts] = useState<IContact[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
