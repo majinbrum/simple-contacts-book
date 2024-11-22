@@ -13,6 +13,15 @@ const Header = () => {
 	const currentPathArray = path.pathname.split("/");
 	const currentPathLast = currentPathArray[currentPathArray.length - 1];
 
+	const headerLinksMap = [
+		{ condition: currentPath.endsWith(currentPathArray[2]), linkTo: "/", icon: HomeIcon },
+		{ condition: currentPath == "/contacts/add", linkTo: "contacts/all", icon: BackIcon },
+		{ condition: currentPathLast == id, linkTo: currentPathArray[2] === "all" || currentPathArray[1] === "groups" ? "/" : `contacts/${currentPathArray[2]}`, icon: BackIcon },
+		{ condition: currentPath == "/contacts/all", linkTo: "contacts/add", icon: AddIcon },
+		{ condition: currentPath == "/groups/add", linkTo: "/", icon: BackIcon },
+		{ condition: currentPath == "/", linkTo: "/groups/edit", icon: EditIcon },
+	];
+
 	return (
 		<header className={style.header}>
 			<h1>
@@ -21,47 +30,16 @@ const Header = () => {
 				CONTACTS
 			</h1>
 			<div className={style.navLinks}>
-				{currentPath.endsWith(currentPathArray[2]) && (
-					<Link
-						className={style.headerButton}
-						to={"/"}>
-						{HomeIcon}
-					</Link>
-				)}
-				{currentPath == "/contacts/add" && (
-					<Link
-						className={style.headerButton}
-						to={`contacts/all`}>
-						{BackIcon}
-					</Link>
-				)}
-				{currentPathLast == id && (
-					<Link
-						className={style.headerButton}
-						to={currentPathArray[2] === "all" || currentPathArray[1] === "groups" ? "/" : `contacts/${currentPathArray[2]}`}>
-						{BackIcon}
-					</Link>
-				)}
-				{currentPath == "/contacts/all" && (
-					<Link
-						className={style.headerButton}
-						to={`contacts/add`}>
-						{AddIcon}
-					</Link>
-				)}
-				{currentPath == "/groups/add" && (
-					<Link
-						className={style.headerButton}
-						to={`/`}>
-						{BackIcon}
-					</Link>
-				)}
-				{currentPath == "/" && (
-					<Link
-						className={style.headerButton}
-						to={`/groups/edit`}>
-						{EditIcon}
-					</Link>
+				{headerLinksMap.map(
+					(headerLink, i) =>
+						headerLink.condition && (
+							<Link
+								key={`HeaderLink${i}`}
+								className={style.headerButton}
+								to={headerLink.linkTo}>
+								{headerLink.icon}
+							</Link>
+						)
 				)}
 			</div>
 		</header>
