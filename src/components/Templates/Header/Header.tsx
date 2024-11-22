@@ -14,7 +14,7 @@ const Header = () => {
 	const currentPathLast = currentPathArray[currentPathArray.length - 1];
 
 	const headerLinksMap = [
-		{ condition: currentPath.endsWith(currentPathArray[2]), linkTo: "/", icon: HomeIcon },
+		{ condition: currentPath.endsWith(currentPathArray[2]) && currentPath !== "/groups/add", linkTo: "/", icon: HomeIcon },
 		{ condition: currentPath == "/contacts/add", linkTo: "contacts/all", icon: BackIcon },
 		{ condition: currentPathLast == id, linkTo: currentPathArray[2] === "all" || currentPathArray[1] === "groups" ? "/" : `contacts/${currentPathArray[2]}`, icon: BackIcon },
 		{ condition: currentPath == "/contacts/all", linkTo: "contacts/add", icon: AddIcon },
