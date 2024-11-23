@@ -118,8 +118,8 @@ function ContactDetailsForm(props: ContactDetailsProps) {
 				contact={{ ...newContact, avatar, name, surname, phone, email, tag, favourite }}
 				listType='alphabetical'
 			/>
-			<Form.Root className={"formRoot"}>
-				<div className={"contactAvatar"}>
+			<Form.Root className={"form"}>
+				<div className={"form__avatar"}>
 					<img
 						src={`${supabaseUrl}/storage/v1/object/public/avatars/${avatar}`}
 						alt={`${name} Avatar`}

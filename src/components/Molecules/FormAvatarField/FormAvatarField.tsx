@@ -13,13 +13,13 @@ const FormAvatarField = (props: FormAvatarFieldProps) => {
 	return (
 		<Form.Field
 			name='avatar'
-			className={"formField"}>
-			<div className={"formInputContainer"}>
-				<Form.Label className={"formLabel"}>Avatar</Form.Label>
+			className={"form__field"}>
+			<div className={"form__input__container"}>
+				<Form.Label className={"form__label"}>Avatar</Form.Label>
 				<Form.Control asChild>
 					<Button
 						type='button'
-						className={"toggle"}
+						className={"form__button--toggle"}
 						onClick={onClick}
 						disabled={disabled}
 						label={RepeatIcon}

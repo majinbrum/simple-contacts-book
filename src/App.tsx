@@ -1,5 +1,5 @@
 // CSS
-import style from "./App.module.css";
+import "./App.css";
 // React
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -41,12 +41,12 @@ const App = () => {
 
 	return (
 		<>
-			<div className={`${style.homeLinkContainer} ${editMode ? style.editMode : null}`}>
+			<div className={`${"groups__container"} ${editMode ? editMode : null}`}>
 				{!editMode && (
 					<Link
 						to={"contacts/all"}
-						className={style.homeLink}>
-						<div className={style.homeLinkAvatar}>
+						className={"groups__card"}>
+						<div className={"groups__card__avatar"}>
 							<img
 								src={`${supabaseUrl}/storage/v1/object/public/avatars/avatars/avatar4.png`}
 								alt='All Avatar'
@@ -60,8 +60,8 @@ const App = () => {
 					<Link
 						key={`${i}List`}
 						to={editMode ? `${group.id}` : `contacts/${group.tag}`}
-						className={style.homeLink}>
-						<div className={style.homeLinkAvatar}>
+						className={"groups__card"}>
+						<div className={"groups__card__avatar"}>
 							<img
 								src={`${supabaseUrl}/storage/v1/object/public/avatars/${group.avatar}`}
 								alt={`${group.tag} Avatar`}
@@ -74,8 +74,8 @@ const App = () => {
 				{!editMode && (
 					<Link
 						to={"groups/add"}
-						className={style.homeLink}>
-						<div className={style.homeLinkIcon}>{AddIcon}</div>
+						className={"groups__card"}>
+						<div className={"groups__card--add"}>{AddIcon}</div>
 						Add group
 					</Link>
 				)}

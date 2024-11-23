@@ -1,5 +1,5 @@
 // CSS
-import style from "./Header.module.css";
+import "./Header.css";
 // React
 import { useLocation, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -23,19 +23,19 @@ const Header = () => {
 	];
 
 	return (
-		<header className={style.header}>
+		<header className={"header"}>
 			<h1>
 				SCB
 				<br />
 				CONTACTS
 			</h1>
-			<div className={style.navLinks}>
+			<div className={"header__nav"}>
 				{headerLinksMap.map(
 					(headerLink, i) =>
 						headerLink.condition && (
 							<Link
 								key={`HeaderLink${i}`}
-								className={style.headerButton}
+								className={"header__nav__button"}
 								to={headerLink.linkTo}>
 								{headerLink.icon}
 							</Link>

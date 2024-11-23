@@ -15,32 +15,32 @@ const FormTextFields = (props: FormTextFieldsProps) => {
 				<Form.Field
 					key={i}
 					name={field.name}
-					className={"formField"}>
+					className={"form__field"}>
 					{editMode && (
-						<div className={"formMessagesContainer"}>
+						<div className={"form__messages__container"}>
 							<Form.Message
-								className={"formMessage"}
+								className={"form__messages__container__message"}
 								match='valueMissing'>
 								This field cannot be empty.
 							</Form.Message>
 							<Form.Message
-								className={"formMessage"}
+								className={"form__messages__container__message"}
 								match={"typeMismatch"}>
 								Please provide a valid email.
 							</Form.Message>
 							<Form.Message
-								className={"formMessage"}
+								className={"form__messages__container__message"}
 								match={"patternMismatch"}>
 								The phone number can only contain numbers and symbols.
 							</Form.Message>
 						</div>
 					)}
-					<div className={"formInputContainer"}>
-						<Form.Label className={"formLabel"}>{field.label}</Form.Label>
-						<div className={"formControl"}>
+					<div className={"form__input__container"}>
+						<Form.Label className={"form__label"}>{field.label}</Form.Label>
+						<div className={"form__control"}>
 							<Form.Control asChild>
 								<input
-									className={"input"}
+									className={"form__input"}
 									type={field.type}
 									value={field.value == null ? "" : field.value}
 									onChange={(e) => {
@@ -56,7 +56,7 @@ const FormTextFields = (props: FormTextFieldsProps) => {
 								<Button
 									type='button'
 									label={CopyIcon}
-									className={"buttonLink"}
+									className={`form__button--extra ${editMode && "form__button--extra--disabled"}`}
 									onClick={() => navigator.clipboard.writeText(field.value)}
 									disabled={editMode}
 								/>
@@ -65,7 +65,7 @@ const FormTextFields = (props: FormTextFieldsProps) => {
 								<a
 									href={`mailto:${field.value}`}
 									target='_blank'
-									className={`buttonLink ${editMode && "buttonLinkDisabled"}`}>
+									className={`form__button--extra ${editMode && "form__button--extra--disabled"}`}>
 									{EnvelopeIcon}
 								</a>
 							)}

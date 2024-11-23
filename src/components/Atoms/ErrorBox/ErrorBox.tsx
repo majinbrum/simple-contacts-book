@@ -1,5 +1,5 @@
 // CSS
-import style from "./ErrorBox.module.css";
+import "./ErrorBox.css";
 // React
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -28,14 +28,14 @@ function ErrorBox(props: ErrorBoxProps) {
 	}, []);
 
 	return (
-		<div className={style.errorContainer}>
+		<div className={"error__container"}>
 			<img
 				src={ErrorBlob}
 				alt='Error Image'
 			/>
-			<h4 className={style.errorMessage}>{errorMessage}</h4>
+			<h4 className={"error__message"}>{errorMessage}</h4>
 			<Link
-				className={style.errorLink}
+				className={"error__link"}
 				to={"/"}>
 				<span>{HomeIcon}</span>
 				Go back home

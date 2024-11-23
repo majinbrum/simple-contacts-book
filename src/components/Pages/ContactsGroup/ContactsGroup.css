@@ -1,25 +1,15 @@
-.listsContainer {
+.contacts__group--empty {
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-md);
 }
 
-.listsContainer.reverse {
-	flex-direction: column-reverse;
-}
-
-.noContactsContainer {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-md);
-}
-
-.noContactsContainer div {
+.contacts__group--empty div {
 	display: flex;
 	gap: var(--space-md);
 }
 
-.noContactsContainer .addLink {
+.contacts__group--empty .empty__link {
 	display: flex;
 	align-items: center;
 	gap: var(--space-sm);
@@ -33,21 +23,31 @@
 	font-weight: var(--font-weight-medium);
 }
 
-.noContactsContainer .addLink:active {
+.contacts__group--empty .empty__link:active {
 	box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
 }
 
-.noContactsContainer .addLink:focus-visible {
+.contacts__group--empty .empty__link:focus-visible {
 	outline: 2px solid var(--accent);
 }
 
-.noContactsContainer .addLink:hover {
+.contacts__group--empty .empty__link:hover {
 	background-color: var(--white);
 }
 
-.noContactsContainer .addLink svg {
+.contacts__group--empty .empty__link svg {
 	display: block;
 	fill: var(--accent);
 	height: 20px;
 	width: 20px;
+}
+
+.contacts__group__container {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-md);
+}
+
+.order--reverse {
+	flex-direction: column-reverse;
 }

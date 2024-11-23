@@ -83,7 +83,7 @@ export interface ContactCardProps {
 	listType: string;
 }
 
-export interface FormAlertDialogProps {
+export interface AlertProps {
 	triggerLabel: string;
 	alertTitle: string;
 	alertDescription: string;

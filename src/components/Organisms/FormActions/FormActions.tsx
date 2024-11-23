@@ -6,7 +6,7 @@ import * as Form from "@radix-ui/react-form";
 import { FormActionsProps } from "../../../types/types";
 // Components
 import Button from "../../Atoms/Button/Button";
-import FormAlertDialog from "../../Molecules/FormAlertDialog/FormAlertDialog";
+import Alert from "../../Molecules/Alert/Alert";
 // Supabase
 import { deleteContactById } from "../../../../supabase/contactsFunctions";
 import { deleteGroupById } from "../../../../supabase/groupsFunctions";
@@ -53,7 +53,7 @@ const FormActions = (props: FormActionsProps) => {
 
 	if (!submit) return;
 	return (
-		<div className={"formButtons"}>
+		<div className={"form__buttons"}>
 			{editMode ? (
 				<>
 					<Button
@@ -64,7 +64,7 @@ const FormActions = (props: FormActionsProps) => {
 					<Form.Submit asChild>
 						<Button
 							type='submit'
-							className={"editPrimaryButton"}
+							className={"form__buttons--edit"}
 							onClick={(e) => submit(e)}
 							label='Save'
 						/>
@@ -72,7 +72,7 @@ const FormActions = (props: FormActionsProps) => {
 				</>
 			) : (
 				<>
-					<FormAlertDialog
+					<Alert
 						triggerLabel={formAlertDialogInfo.triggerLabel}
 						alertTitle={formAlertDialogInfo.alertTitle}
 						alertDescription={formAlertDialogInfo.alertDescription}
@@ -82,7 +82,7 @@ const FormActions = (props: FormActionsProps) => {
 					<Form.Submit asChild>
 						<Button
 							type={!id ? "submit" : "button"}
-							className={"formPrimaryButton"}
+							className={"form__buttons--submit"}
 							onClick={(e) => (!id ? submit(e) : enterEditMode(e))}
 							label={!id ? "Create" : "Edit"}
 						/>

@@ -1,5 +1,5 @@
 // CSS
-import style from "./Group.module.css";
+import "./Group.css";
 // React
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -47,7 +47,7 @@ const Group = () => {
 	if (isLoading || !group) return <Loader />;
 
 	return (
-		<div className={style.contactContainer}>
+		<div className={"group__container"}>
 			<GroupDetailsForm group={group} />
 		</div>
 	);

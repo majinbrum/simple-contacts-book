@@ -15,7 +15,7 @@ const SearchBox = () => {
 	const { filter, setFilter, sortBy, setSortBy, order, setOrder } = useContext(FilterContext);
 
 	return (
-		<div className={style.searchBox}>
+		<div className={style.search__box}>
 			<InputText
 				name='filter'
 				placeholder='Search contacts...'
@@ -23,7 +23,7 @@ const SearchBox = () => {
 				setValue={setFilter}
 				icon={SearchIcon}
 			/>
-			<div className={style.selectBox}>
+			<div className={style.select__box}>
 				<InputSelect
 					label='Sort by'
 					name='sort'

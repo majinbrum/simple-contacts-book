@@ -1,5 +1,5 @@
 // CSS
-import style from "./Contact.module.css";
+import "./Contact.css";
 // React
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -49,7 +49,7 @@ const Contact = () => {
 	if (isLoading || !contact) return <Loader />;
 
 	return (
-		<div className={style.contactContainer}>
+		<div className={"contact__container"}>
 			<ContactDetailsForm contact={contact} />
 		</div>
 	);

@@ -95,8 +95,8 @@ function GroupDetailsForm(props: GroupDetailsProps) {
 
 	return (
 		<>
-			<Form.Root className={"formRoot"}>
-				<div className={"contactAvatar"}>
+			<Form.Root className={"form"}>
+				<div className={"form__avatar"}>
 					<img
 						src={`${supabaseUrl}/storage/v1/object/public/avatars/${avatar}`}
 						alt={`${tag} Avatar`}
