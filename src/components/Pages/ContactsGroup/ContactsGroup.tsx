@@ -1,5 +1,5 @@
 // CSS
-import style from "./ContactsGroup.module.css";
+import "./ContactsGroup.css";
 // React
 import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -7,7 +7,7 @@ import { Link, useParams } from "react-router-dom";
 import SearchBox from "../../Organisms/SearchBox/SearchBox";
 import ContactsList from "../../Templates/ContactsList/ContactsList";
 import Loader from "../../Atoms/Loader/Loader";
-import ErrorBox from "../../Molecules/ErrorBox/ErrorBox";
+import ErrorBox from "../../Atoms/ErrorBox/ErrorBox";
 // Context
 import { FilterContext } from "../../../providers/FilterContext";
 import { useSetGroupsContext } from "../../../providers/GroupsContext";
@@ -99,17 +99,17 @@ const ContactsGroup = () => {
 			<h2>#{group?.toUpperCase()} CONTACTS</h2>
 			{!error && contacts.length === 0 && (
 				<>
-					<div className={style.noContactsContainer}>
+					<div className={"contacts__group--empty"}>
 						<p>There are no contacts in this group yet.</p>
 						<div>
 							<Link
-								className={style.addLink}
+								className={"empty__link"}
 								to={"/contacts/add"}>
 								<span>{AddIcon}</span>
 								New contact
 							</Link>
 							<Link
-								className={style.addLink}
+								className={"empty__link"}
 								to={"/contacts/all"}>
 								<span>{SearchIcon}</span>
 								Search contact
@@ -126,7 +126,7 @@ const ContactsGroup = () => {
 				/>
 			)}
 
-			<div className={`${style.listsContainer} ${order == "descending" ? style.reverse : null}`}>
+			<div className={`${"contacts__group__container"} ${order == "descending" ? "order--reverse" : null}`}>
 				{alphabet.map(
 					(letter, i) =>
 						filteredContacts[letter].length > 0 && (

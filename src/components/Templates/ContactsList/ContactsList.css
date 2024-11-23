@@ -1,47 +1,47 @@
-.contactsListContainer,
-.contactsList {
+.contacts__container,
+.contacts__list {
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-md);
 }
 
-.contactsFavouriteGrid {
+.contacts__list--favourites {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
 	gap: var(--space-md);
 }
 
-.contactsListHeader {
+@media (min-width: 768px) {
+	.contacts__list--favourites.single {
+		grid-template-columns: 250px;
+	}
+}
+
+.contacts__list__header {
 	display: flex;
 	justify-content: space-between;
 	gap: var(--space-sm);
 }
 
-.contactsListHeader button {
+.contacts__list__header button {
 	cursor: pointer;
 	border: none;
 	background-color: transparent;
 	padding-right: var(--space-sm);
 }
 
-.contactsListHeader button svg {
+.contacts__list__header button svg {
 	margin-right: var(--space-xs);
 	width: 20px;
 	height: 20px;
 	fill: var(--accent);
 }
 
-@media (min-width: 768px) {
-	.contactsFavouriteGrid.oneItem {
-		grid-template-columns: 250px;
-	}
-}
-
-.contactsList.contactsReverseOrder {
-	flex-direction: column-reverse;
-}
-
-.cardContainer:focus-visible {
+.card__container:focus-visible {
 	outline: 2px solid var(--accent);
 	border-radius: var(--border-radius);
+}
+
+.order--reverse {
+	flex-direction: column-reverse;
 }

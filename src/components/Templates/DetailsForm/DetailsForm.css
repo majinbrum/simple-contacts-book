@@ -1,73 +1,69 @@
-.formRoot {
+.form {
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-md);
 	align-items: start;
 }
 
-.contactAvatar {
+.form__avatar {
 	align-self: center;
 }
 
-.formField {
+.form__field {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-xs);
 }
 
-.formField:has(.toggle) {
+.form__field:has(.form__button--toggle) {
 	width: unset;
 }
 
-.formControl {
+.form__control {
 	width: 100%;
 	display: flex;
 	align-items: stretch;
 	gap: var(--space-md);
 }
 
-.formControl input {
+.form__control input {
 	flex-grow: 1;
 }
 
-.formControl .buttonLink {
+.form__control .form__button--extra {
 	cursor: pointer;
 	height: auto;
 	padding: var(--space-sm);
 }
 
-.formControl .buttonLink svg {
+.form__control .form__button--extra svg {
 	width: 20px;
 }
 
-.formInputContainer {
+.form__input__container {
 	display: grid;
 	gap: var(--space-sm);
 	grid-template-columns: 80px 1fr;
 	align-items: center;
 }
 
-.formInputContainer:has(.toggle) {
-	width: unset;
-}
-
-.formMessagesContainer {
+.form__messages__container {
 	text-align: right;
 }
 
-.formMessage {
+.form__messages__container__message {
 	font-size: var(--font-size-sm);
 	opacity: 0.5;
 	color: red;
 }
 
-.formLabel {
+.form__label {
 	font-size: var(--font-size-md);
 	font-weight: var(--font-weight-medium);
 }
 
-.input {
+.form__input {
 	all: unset;
 	box-sizing: border-box;
 
@@ -80,10 +76,10 @@
 	padding: var(--space-sm);
 }
 
-.input:disabled,
-.toggle:disabled,
-.buttonLink:disabled,
-.buttonLink.buttonLinkDisabled {
+.form__input:disabled,
+.form__button--toggle:disabled,
+.form__button--extra:disabled,
+.form__button--extra.form__button--extra--disabled {
 	pointer-events: none;
 	background-color: var(--white);
 	font-size: var(--font-size-md);
@@ -91,33 +87,27 @@
 	outline: 2px solid var(--light);
 }
 
-.input:hover:not(:disabled),
-.toggle:hover:not(:disabled),
-.buttonLink:hover:not(:disabled):not(.buttonLinkDisabled) {
+.form__input:hover:not(:disabled),
+.form__button--toggle:hover:not(:disabled),
+.form__button--extra:hover:not(.form__button--extra--disabled) {
 	outline: 2px solid var(--accent);
 }
 
-.input::placeholder {
+.form__input::placeholder {
 	opacity: 0.4;
 }
 
-.inputCheckbox {
-	height: 25px;
-	width: 25px;
-	accent-color: #6e56cf;
-}
-
-.input:focus-visible {
+.form__input:focus-visible {
 	outline: 2px solid var(--accent);
 }
 
-.input::selection {
+.form__input::selection {
 	background-color: var(--accent);
 	color: var(--white);
 }
 
-.toggle,
-.buttonLink {
+.form__button--toggle,
+.form__button--extra {
 	background-color: var(--light);
 	fill: var(--accent);
 	border-radius: 50%;
@@ -129,28 +119,28 @@
 	align-items: center;
 }
 
-.toggle:not([disabled]) {
+.form__button--toggle:not([disabled]) {
 	cursor: pointer;
 }
 
-.toggle:not([disabled]):active,
-.buttonLink:not(:disabled):not(.buttonLinkDisabled):active {
+.form__button--toggle:not([disabled]):active,
+.form__button--extra:not(.form__button--extra--disabled):active {
 	box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
 }
 
-.toggle svg {
+.form__button--toggle svg {
 	height: 20px;
 	width: 20px;
 }
 
-.formButtons {
+.form__buttons {
 	width: 100%;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: var(--space-md);
 }
 
-.formButtons button {
+.form__buttons button {
 	cursor: pointer;
 	border: none;
 	border-radius: var(--border-radius);
@@ -159,16 +149,16 @@
 	font-weight: var(--font-weight-bold);
 }
 
-.formButtons button:active {
+.form__buttons button:active {
 	box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
 }
 
-.formButtons button.formPrimaryButton {
+.form__buttons button.form__buttons--submit {
 	background-color: var(--black);
 	color: var(--light);
 }
 
-.formButtons button.editPrimaryButton {
+.form__buttons button.form__buttons--edit {
 	background-color: var(--accent);
 	color: var(--white);
 }

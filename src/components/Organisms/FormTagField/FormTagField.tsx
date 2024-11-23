@@ -1,7 +1,7 @@
 // Radix UI components
 import * as Form from "@radix-ui/react-form";
 // Components
-import InputSelect from "../../Atoms/InputSelect/InputSelect";
+import InputSelect from "../../Molecules/InputSelect/InputSelect";
 // Interfaces
 import { FormTagFieldProps } from "../../../types/types";
 // Context
@@ -14,18 +14,18 @@ const FormTagField = (props: FormTagFieldProps) => {
 	return (
 		<Form.Field
 			name='tag'
-			className={"formField"}>
+			className={"form__field"}>
 			{form == "group" && (
-				<div className={"formMessagesContainer"}>
+				<div className={"form__messages__container"}>
 					<Form.Message
-						className={"formMessage"}
+						className={"form__messages__container__message"}
 						match='valueMissing'>
 						This field cannot be empty.
 					</Form.Message>
 				</div>
 			)}
-			<div className={form == "contact" ? "formInputContainer formInputSelect" : "formInputContainer"}>
-				<Form.Label className={"formLabel"}>#Tag</Form.Label>
+			<div className={"form__input__container"}>
+				<Form.Label className={"form__label"}>#Tag</Form.Label>
 				<Form.Control asChild>
 					<>
 						{form == "contact" && (
@@ -39,7 +39,7 @@ const FormTagField = (props: FormTagFieldProps) => {
 						)}
 						{form == "group" && (
 							<input
-								className={"input"}
+								className={"form__input"}
 								type='text'
 								value={tag}
 								onChange={(e) => {

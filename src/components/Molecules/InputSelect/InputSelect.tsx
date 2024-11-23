@@ -1,5 +1,5 @@
 // CSS
-import style from "./InputSelect.module.css";
+import "./InputSelect.css";
 // Radix UI Component
 import * as Select from "@radix-ui/react-select";
 // Interfaces
@@ -16,55 +16,55 @@ const InputSelect = (props: InputSelectProps) => {
 			onValueChange={(newValue) => setValue(newValue)}
 			disabled={disabled}>
 			<Select.Trigger
-				className={style.selectTrigger}
+				className={"select__trigger"}
 				aria-label={`${name} Select`}>
 				{valuesObject && <Select.Value />}
 				{valuesGroups && <Select.Value placeholder='Select group tag...'>{value}</Select.Value>}
-				<Select.Icon className={style.selectIcon}>{ChevronDownIcon}</Select.Icon>
+				<Select.Icon className={"select__icon"}>{ChevronDownIcon}</Select.Icon>
 			</Select.Trigger>
 			<Select.Portal>
 				<Select.Content
-					className={style.selectContent}
+					className={"select__content"}
 					position={"popper"}>
-					<Select.ScrollUpButton className={style.selectScrollButton}>{ChevronUpIcon}</Select.ScrollUpButton>
-					<Select.Viewport className={style.selectViewport}>
+					<Select.ScrollUpButton className={"select__button--scroll"}>{ChevronUpIcon}</Select.ScrollUpButton>
+					<Select.Viewport className={"select__viewport"}>
 						<Select.Group>
-							{label && <Select.Label className={style.selectLabel}>{label}</Select.Label>}
+							{label && <Select.Label className={"select__label"}>{label}</Select.Label>}
 							{valuesObject &&
 								Object.entries(valuesObject).map(([key, item]) => (
 									<Select.Item
 										key={key}
 										value={key}
-										className={style.selectItem}>
+										className={"select__item"}>
 										<Select.ItemText>
 											{item.icon} {item.label}
 										</Select.ItemText>
-										<Select.ItemIndicator className={style.selectItemIndicator}>{CheckIcon}</Select.ItemIndicator>
+										<Select.ItemIndicator className={"select__item__indicator"}>{CheckIcon}</Select.ItemIndicator>
 									</Select.Item>
 								))}
 							{valuesGroups && (
 								<>
 									<Select.Item
 										value='None'
-										className={style.selectItem}>
+										className={"select__item"}>
 										<Select.ItemText>None</Select.ItemText>
-										<Select.ItemIndicator className={style.selectItemIndicator}>{CheckIcon}</Select.ItemIndicator>
+										<Select.ItemIndicator className={"select__item__indicator"}>{CheckIcon}</Select.ItemIndicator>
 									</Select.Item>
 
 									{valuesGroups.map((group) => (
 										<Select.Item
 											key={group.id}
 											value={group.tag}
-											className={style.selectItem}>
+											className={"select__item"}>
 											<Select.ItemText>{group.tag}</Select.ItemText>
-											<Select.ItemIndicator className={style.selectItemIndicator}>{CheckIcon}</Select.ItemIndicator>
+											<Select.ItemIndicator className={"select__item__indicator"}>{CheckIcon}</Select.ItemIndicator>
 										</Select.Item>
 									))}
 								</>
 							)}
 						</Select.Group>
 					</Select.Viewport>
-					<Select.ScrollDownButton className={style.selectScrollButton}>{ChevronDownIcon}</Select.ScrollDownButton>
+					<Select.ScrollDownButton className={"select__button--scroll"}>{ChevronDownIcon}</Select.ScrollDownButton>
 				</Select.Content>
 			</Select.Portal>
 		</Select.Root>

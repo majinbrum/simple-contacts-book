@@ -1,4 +1,4 @@
-.alertDialogOverlay {
+.alert__overlay {
 	background-color: var(--light);
 	opacity: 0.6;
 	position: fixed;
@@ -6,7 +6,7 @@
 	animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.alertDialogContent {
+.alert__content {
 	background-color: white;
 	border-radius: var(--border-radius);
 	box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
@@ -21,44 +21,44 @@
 	animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.alertDialogContent:focus {
+.alert__content:focus {
 	outline: 1px solid var(--accent);
 }
 
-.alertDialogTitle {
+.alert__content__title {
 	margin: 0;
 	font-size: 17px;
 	font-weight: 500;
 }
 
-.alertDialogDescription {
+.alert__content__description {
 	margin-bottom: 20px;
 	font-size: 15px;
 	line-height: 1.5;
 }
 
-.alertButtons {
+.alert__content__buttons {
 	display: flex;
 	gap: var(--space-sm);
 	justify-content: flex-end;
 }
 
-.alertButtons button {
+.alert__content__buttons button {
 	border-radius: var(--border-radius);
 	border: none;
 	padding: var(--space-xs);
 	font-weight: var(--font-weight-medium);
 }
 
-.alertButtons button:focus {
+.alert__content__buttons button:focus {
 	outline: 1px solid var(--accent);
 }
 
-.alertButtons button:active {
+.alert__content__buttons button:active {
 	box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
 }
 
-.alertButtons button.alertButtonPrimary {
+.alert__content__buttons button.alert__content__buttons--primary {
 	background-color: red;
 	color: var(--white);
 }

@@ -12,12 +12,12 @@ const FormFavouriteField = (props: FormFavouriteFieldProps) => {
 	return (
 		<Form.Field
 			name='favourite'
-			className={"formField"}>
-			<div className={"formInputContainer"}>
-				<Form.Label className={"formLabel"}>Favourite</Form.Label>
+			className={"form__field"}>
+			<div className={"form__input__container"}>
+				<Form.Label className={"form__label"}>Favourite</Form.Label>
 				<Form.Control asChild>
 					<Toggle.Root
-						className={"toggle"}
+						className={"form__button--toggle"}
 						aria-label='Toggle favourite'
 						onClick={onClick}
 						disabled={disabled}>

@@ -1,5 +1,5 @@
 // CSS
-import style from "./Header.module.css";
+import "./Header.css";
 // React
 import { useLocation, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -14,7 +14,7 @@ const Header = () => {
 	const currentPathLast = currentPathArray[currentPathArray.length - 1];
 
 	const headerLinksMap = [
-		{ condition: currentPath.endsWith(currentPathArray[2]), linkTo: "/", icon: HomeIcon },
+		{ condition: currentPath.endsWith(currentPathArray[2]) && currentPath !== "/groups/add", linkTo: "/", icon: HomeIcon },
 		{ condition: currentPath == "/contacts/add", linkTo: "contacts/all", icon: BackIcon },
 		{ condition: currentPathLast == id, linkTo: currentPathArray[2] === "all" || currentPathArray[1] === "groups" ? "/" : `contacts/${currentPathArray[2]}`, icon: BackIcon },
 		{ condition: currentPath == "/contacts/all", linkTo: "contacts/add", icon: AddIcon },
@@ -23,19 +23,19 @@ const Header = () => {
 	];
 
 	return (
-		<header className={style.header}>
+		<header className={"header"}>
 			<h1>
 				SCB
 				<br />
 				CONTACTS
 			</h1>
-			<div className={style.navLinks}>
+			<div className={"header__nav"}>
 				{headerLinksMap.map(
 					(headerLink, i) =>
 						headerLink.condition && (
 							<Link
 								key={`HeaderLink${i}`}
-								className={style.headerButton}
+								className={"header__nav__button"}
 								to={headerLink.linkTo}>
 								{headerLink.icon}
 							</Link>

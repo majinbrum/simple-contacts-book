@@ -1,13 +1,13 @@
 // CSS
-import style from "./FormAlertDialog.module.css";
+import "./Alert.css";
 // Interfaces
-import { FormAlertDialogProps } from "../../../types/types";
+import { AlertProps } from "../../../types/types";
 // Radix UI component
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 // Components
 import Button from "../../Atoms/Button/Button";
 
-const FormAlertDialog = (props: FormAlertDialogProps) => {
+const Alert = (props: AlertProps) => {
 	const { triggerLabel, alertTitle, alertDescription, actionButtonLabel, actionButtonFunction } = props;
 
 	return (
@@ -19,23 +19,22 @@ const FormAlertDialog = (props: FormAlertDialogProps) => {
 				/>
 			</AlertDialog.Trigger>
 			<AlertDialog.Portal>
-				<AlertDialog.Overlay className={style.alertDialogOverlay} />
-				<AlertDialog.Content className={style.alertDialogContent}>
-					<AlertDialog.Title className={style.alertDialogTitle}>{alertTitle}</AlertDialog.Title>
-					<AlertDialog.Description className={style.alertDialogDescription}>{alertDescription}</AlertDialog.Description>
-					<div className={style.alertButtons}>
+				<AlertDialog.Overlay className={"alert__overlay"} />
+				<AlertDialog.Content className={"alert__content"}>
+					<AlertDialog.Title className={"alert__content__title"}>{alertTitle}</AlertDialog.Title>
+					<AlertDialog.Description className={"alert__content__description"}>{alertDescription}</AlertDialog.Description>
+					<div className={"alert__content__buttons"}>
 						<AlertDialog.Cancel asChild>
 							<Button
 								type='button'
 								label='Cancel'
-								className={style.alertButtonSecondary}
 							/>
 						</AlertDialog.Cancel>
 						<AlertDialog.Action asChild>
 							<Button
 								type='button'
 								label={actionButtonLabel}
-								className={style.alertButtonPrimary}
+								className={"alert__content__buttons--primary"}
 								onClick={actionButtonFunction}
 							/>
 						</AlertDialog.Action>
@@ -46,4 +45,4 @@ const FormAlertDialog = (props: FormAlertDialogProps) => {
 	);
 };
 
-export default FormAlertDialog;
+export default Alert;

@@ -1,4 +1,4 @@
-.inputTextLabel {
+.input--text__label {
 	display: flex;
 	align-items: center;
 	padding-left: var(--space-sm);
@@ -7,12 +7,16 @@
 	border-radius: var(--border-radius);
 }
 
-.inputTextLabel svg {
+.input--text__label:focus-within {
+	outline: 2px solid var(--accent);
+}
+
+.input--text__label svg {
 	fill: var(--accent);
 	height: 20px;
 }
 
-.inputText {
+.input--text {
 	width: 100%;
 	border: none;
 	border-bottom-right-radius: var(--border-radius);
@@ -22,15 +26,11 @@
 	font-weight: var(--font-weight-light);
 }
 
-.inputText:focus-visible {
+.input--text:focus-visible {
 	outline: none;
 }
 
-.inputTextLabel:focus-within {
-	outline: 2px solid var(--accent);
-}
-
-.inputText::selection {
+.input--text::selection {
 	background-color: var(--accent);
 	color: var(--white);
 }

@@ -1,12 +1,12 @@
 // CSS
-import style from "./Contact.module.css";
+import "./Contact.css";
 // React
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 // Components
 import ContactDetailsForm from "../../Templates/DetailsForm/ContactDetailsForm";
 import Loader from "../../Atoms/Loader/Loader";
-import ErrorBox from "../../Molecules/ErrorBox/ErrorBox";
+import ErrorBox from "../../Atoms/ErrorBox/ErrorBox";
 // Interfaces
 import { IContact } from "../../../types/databaseTypes";
 // Supabase
@@ -49,7 +49,7 @@ const Contact = () => {
 	if (isLoading || !contact) return <Loader />;
 
 	return (
-		<div className={style.contactContainer}>
+		<div className={"contact__container"}>
 			<ContactDetailsForm contact={contact} />
 		</div>
 	);

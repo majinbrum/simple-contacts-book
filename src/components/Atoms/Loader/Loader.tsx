@@ -1,12 +1,12 @@
 // CSS
-import style from "./Loader.module.css";
+import "./Loader.css";
 // Assets
 import { LoaderIcon } from "../../../assets/icons";
 
 const Loader = () => {
 	return (
-		<div className={style.loaderOverlay}>
-			<div className={style.loaderIcon}>{LoaderIcon}</div>
+		<div className={"loader__overlay"}>
+			<div className={"loader__icon"}>{LoaderIcon}</div>
 		</div>
 	);
 };

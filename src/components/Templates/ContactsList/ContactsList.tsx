@@ -1,5 +1,5 @@
 // CSS
-import style from "./ContactsList.module.css";
+import "./ContactsList.css";
 // React
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -17,8 +17,8 @@ const ContactsList = (props: ContactsListProps) => {
 	const [showList, setShowList] = useState(true);
 
 	return (
-		<div className={style.contactsListContainer}>
-			<div className={style.contactsListHeader}>
+		<div className={"contacts__container"}>
+			<div className={"contacts__list__header"}>
 				<h2>{title}</h2>
 				<Button
 					type='button'
@@ -27,15 +27,12 @@ const ContactsList = (props: ContactsListProps) => {
 				/>
 			</div>
 			{showList && (
-				<div
-					className={`${listType === "favourites" ? style.contactsFavouriteGrid : style.contactsList} ${order == "descending" ? style.contactsReverseOrder : null} ${
-						contacts.length < 2 && style.oneItem
-					}`}>
+				<div className={`${listType === "favourites" ? "contacts__list--favourites" : "contacts__list"} ${order == "descending" ? "order--reverse" : null} ${contacts.length < 2 && "single"}`}>
 					{contacts.map((contact, i) => (
 						<Link
 							to={`/contacts/${group}/${contact.id}`}
 							key={`${contact}${i}`}
-							className={style.cardContainer}>
+							className={"card__container"}>
 							<ContactCard
 								key={contact.id}
 								contact={contact}
