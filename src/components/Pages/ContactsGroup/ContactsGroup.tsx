@@ -1,27 +1,37 @@
-import { useParams } from "react-router-dom";
-import style from "./ContactsGroup.module.css";
+// CSS
+import "./ContactsGroup.css";
+// React
+import { useContext, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+// Components
 import SearchBox from "../../Organisms/SearchBox/SearchBox";
 import ContactsList from "../../Templates/ContactsList/ContactsList";
-import { useOrderContext } from "../../../providers/OrderContext";
-import { useEffect, useState } from "react";
-import { useFilterContext } from "../../../providers/FilterContext";
-import { useContactsContext } from "../../../providers/ContactsContext";
-import { useSortByContext } from "../../../providers/SortByContext";
 import Loader from "../../Atoms/Loader/Loader";
+import ErrorBox from "../../Atoms/ErrorBox/ErrorBox";
+// Context
+import { FilterContext } from "../../../providers/FilterContext";
+import { useSetGroupsContext } from "../../../providers/GroupsContext";
+// Interfaces
+import { IContact } from "../../../types/databaseTypes";
 import { IFilteredContacts } from "../../../types/types";
+// Supabase
+import { readContacts } from "../../../../supabase/contactsFunctions";
+// Assets
+import { AddIcon, SearchIcon } from "../../../assets/icons";
 
 const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
 
 const ContactsGroup = () => {
 	const { group } = useParams();
-	const contacts = useContactsContext();
-	const filter = useFilterContext();
-	const sortBy = useSortByContext();
-	const order = useOrderContext();
+	const getGroups = useSetGroupsContext();
+	const { filter, sortBy, order } = useContext(FilterContext);
 
-	const [filteredContacts, setFilteredContacts] = useState<IFilteredContacts>();
+	const [contacts, setContacts] = useState<IContact[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState<string>();
+	const [filteredContacts, setFilteredContacts] = useState<IFilteredContacts | null>(null);
 
-	const renderLists = () => {
+	const renderLists = (contacts: IContact[]) => {
 		const temp: IFilteredContacts = {};
 
 		temp["FAVOURITES"] = [];
@@ -29,15 +39,12 @@ const ContactsGroup = () => {
 		temp["#"] = [];
 
 		contacts
-			.filter((contact) => (group == "all" ? contact : group == "favourites" ? contact.favourite == true : contact.tag.toLowerCase() == group))
 			.filter((contact) => (contact.name + " " + contact.surname + " " + contact.email + " " + contact.phone).toLowerCase().includes(filter))
 			.map((contact) => {
 				const firstLetter = (contact[sortBy as keyof typeof contact] as string)[0].toUpperCase();
-
 				if (contact.favourite) {
 					temp["FAVOURITES"].push(contact);
 				}
-
 				if (alphabet.includes(firstLetter)) {
 					temp[firstLetter].push(contact);
 				} else {
@@ -48,16 +55,69 @@ const ContactsGroup = () => {
 		setFilteredContacts(temp);
 	};
 
-	useEffect(() => {
-		renderLists();
-	}, [contacts, filter, sortBy, order]);
+	const getAndRenderContacts = async () => {
+		if (!group) return;
+		try {
+			setIsLoading(true);
+			const data = await readContacts(group, sortBy, order);
+			setContacts(data);
+			renderLists(data);
+		} catch (error: any) {
+			setError(error.message);
+			console.dir(error);
+			console.log(error);
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
-	if (!filteredContacts) return <Loader />;
+	useEffect(() => {
+		setIsLoading(true);
+		const data = getGroups();
+		if (typeof data === "string") {
+			setError(data);
+		} else {
+			setIsLoading(false);
+		}
+	}, []);
+
+	useEffect(() => {
+		setFilteredContacts(null);
+		getAndRenderContacts();
+	}, [group]);
+
+	useEffect(() => {
+		renderLists(contacts);
+	}, [filter, sortBy, order]);
+
+	if (error) return <ErrorBox message={error} />;
+	if (isLoading || !filteredContacts) return <Loader />;
 
 	return (
 		<>
 			<SearchBox />
 			<h2>#{group?.toUpperCase()} CONTACTS</h2>
+			{!error && contacts.length === 0 && (
+				<>
+					<div className={"contacts__group--empty"}>
+						<p>There are no contacts in this group yet.</p>
+						<div>
+							<Link
+								className={"empty__link"}
+								to={"/contacts/add"}>
+								<span>{AddIcon}</span>
+								New contact
+							</Link>
+							<Link
+								className={"empty__link"}
+								to={"/contacts/all"}>
+								<span>{SearchIcon}</span>
+								Search contact
+							</Link>
+						</div>
+					</div>
+				</>
+			)}
 			{filteredContacts["FAVOURITES"].length > 0 && (
 				<ContactsList
 					title={"FAVOURITES"}
@@ -66,7 +126,7 @@ const ContactsGroup = () => {
 				/>
 			)}
 
-			<div className={`${style.listsContainer} ${order == "descending" ? style.reverse : null}`}>
+			<div className={`${"contacts__group__container"} ${order == "descending" ? "order--reverse" : null}`}>
 				{alphabet.map(
 					(letter, i) =>
 						filteredContacts[letter].length > 0 && (

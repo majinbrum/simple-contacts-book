@@ -1,5 +1,5 @@
 import { Dispatch, FormEvent, ReactElement, ReactNode, SetStateAction } from "react";
-import { IContact } from "./databaseTypes";
+import { IContact, IGroup } from "./databaseTypes";
 
 export interface IValue {
 	label: string;
@@ -11,11 +11,13 @@ export interface IValuesObject {
 }
 
 export interface InputSelectProps {
-	label: string;
+	label?: string;
 	name: string;
-	valuesObject: IValuesObject;
+	valuesObject?: IValuesObject;
+	valuesGroups?: IGroup[];
 	value: string;
 	setValue: Dispatch<SetStateAction<string>>;
+	disabled?: boolean;
 }
 
 export interface InputTextProps {
@@ -24,6 +26,49 @@ export interface InputTextProps {
 	value: string;
 	setValue: Dispatch<SetStateAction<string>>;
 	icon?: ReactElement;
+}
+
+export interface FormTextFieldsProps {
+	editMode: boolean;
+	formFields: {
+		name: string;
+		label: string;
+		value: string;
+		setValue: Dispatch<SetStateAction<string>>;
+		type: string;
+		placeholder: string;
+		pattern?: string;
+	}[];
+	disabled: boolean;
+}
+
+export interface FormFavouriteFieldProps {
+	onClick: () => void;
+	disabled: boolean;
+	favourite: boolean;
+}
+
+export interface FormTagFieldProps {
+	form: "group" | "contact";
+	tag: string;
+	setTag: React.Dispatch<React.SetStateAction<string>>;
+	disabled: boolean;
+}
+
+export interface FormAvatarFieldProps {
+	onClick: (e: FormEvent) => Promise<void>;
+	disabled: boolean;
+}
+
+export interface FormActionsProps {
+	editMode: boolean;
+	handleReset: () => void;
+	submitContact?: (e: FormEvent) => Promise<void>;
+	submitGroup?: (e: FormEvent) => Promise<void>;
+	id: string;
+	enterEditMode: (e: FormEvent) => void;
+	setEditMode: Dispatch<SetStateAction<boolean>>;
+	setError: Dispatch<SetStateAction<string | undefined>>;
 }
 
 export interface ContactsListProps {
@@ -38,7 +83,7 @@ export interface ContactCardProps {
 	listType: string;
 }
 
-export interface FormAlertDialogProps {
+export interface AlertProps {
 	triggerLabel: string;
 	alertTitle: string;
 	alertDescription: string;
@@ -63,6 +108,14 @@ export interface ContactDetailsProps {
 	contact: IContact;
 }
 
+export interface GroupDetailsProps {
+	group: IGroup;
+}
+
 export interface IFilteredContacts {
 	[key: string]: IContact[];
+}
+
+export interface ErrorBoxProps {
+	message: string;
 }

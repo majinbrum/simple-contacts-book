@@ -1,4 +1,4 @@
-.selectTrigger {
+.select__trigger {
 	display: flex;
 	align-items: center;
 	padding: 0 var(--space-sm);
@@ -8,16 +8,24 @@
 	border: none;
 	outline: 2px solid var(--light);
 }
-.selectTrigger:hover {
+
+.select__trigger:disabled {
+	color: var(--black);
+}
+.select__trigger:disabled .select__icon svg {
+	fill: var(--accentLowOpacity);
+}
+
+.select__trigger:hover:not(:disabled) {
 	outline: 2px solid var(--accent);
 }
-.selectTrigger:focus,
-.selectTrigger:active {
+.select__trigger:focus,
+.select__trigger:active {
 	outline: 2px solid var(--accent);
 	box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
 }
 
-.selectTrigger span:first-child {
+.select__trigger span:first-child {
 	display: flex;
 	align-items: center;
 	gap: var(--space-xs);
@@ -27,31 +35,39 @@
 	font-weight: var(--font-weight-light);
 }
 
-.selectTrigger span:first-child svg {
+.select__trigger span:first-child svg {
 	height: 20px;
 	fill: var(--accent);
 }
 
-.selectIcon {
+.select__icon {
 	width: 13px;
 	height: 13px;
 	fill: var(--accent);
 }
 
-.selectContent {
+.select__content {
 	overflow: hidden;
 	font-size: var(--font-size-sm);
+
 	background-color: var(--white);
 	border-radius: 6px;
 	box-shadow: 0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px rgba(22, 23, 24, 0.2);
 }
 
-.selectViewport {
+.select__viewport {
 	width: 200px;
 	padding: var(--space-sm) 0 0;
 }
 
-.selectItem {
+.select__label {
+	font-size: var(--font-size-md);
+	font-weight: var(--font-weight-regular);
+	padding: 0 var(--space-sm);
+	padding-bottom: var(--space-sm);
+}
+
+.select__item {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -60,36 +76,30 @@
 
 	user-select: none;
 }
-.selectItem[data-highlighted] {
+
+.select__item[data-highlighted] {
 	outline: none;
 	background-color: var(--light);
 }
 
-.selectItem span {
+.select__item span {
 	display: flex;
 	align-items: center;
 	gap: var(--space-xs);
 }
 
-.selectItem span svg {
+.select__item span svg {
 	height: 20px;
 	fill: var(--accent);
 }
 
-.selectLabel {
-	font-size: var(--font-size-md);
-	font-weight: var(--font-weight-regular);
-	padding: 0 var(--space-sm);
-	padding-bottom: var(--space-sm);
-}
-
-.selectItemIndicator svg {
+.select__item__indicator svg {
 	padding-right: var(--space-sm);
 	height: 13px;
 	fill: var(--accent);
 }
 
-.selectScrollButton {
+.select__button--scroll {
 	height: 20px;
 	fill: var(--accent);
 	background-color: white;

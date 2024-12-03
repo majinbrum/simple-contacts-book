@@ -1,94 +1,84 @@
-import style from "./App.module.css";
+// CSS
+import "./App.css";
+// React
 import { useEffect, useState } from "react";
-import { generateRandomAvatar, readContacts, readContactsGroups } from "../supabase/functions";
-import Loader from "./components/Atoms/Loader/Loader";
-import { useSortByContext } from "./providers/SortByContext";
-import { useOrderContext } from "./providers/OrderContext";
-import { Link } from "react-router-dom";
-import { useSetContactsContext } from "./providers/ContactsContext";
-import { IContactsGroup } from "./types/databaseTypes";
+import { Link, useLocation } from "react-router-dom";
+// Supabase
 import { supabaseUrl } from "../supabase/supabaseClient";
+// Context
+import { useGroupsContext, useSetGroupsContext } from "./providers/GroupsContext";
+// Components
+import Loader from "./components/Atoms/Loader/Loader";
+import ErrorBox from "./components/Atoms/ErrorBox/ErrorBox";
+// Assets
+import { AddIcon } from "./assets/icons";
 
 const App = () => {
+	const path = useLocation();
+	const currentPathArray = path.pathname.split("/");
+	const currentPathLast = currentPathArray[currentPathArray.length - 1];
+	const groups = useGroupsContext();
+	const getGroups = useSetGroupsContext();
+	const [editMode, setEditMode] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [contactsGroups, setContactsGroups] = useState<IContactsGroup[]>();
-	const [groupsAvatars, setGroupsAvatars] = useState<string[]>();
-
-	const setContacts = useSetContactsContext();
-	const sortBy = useSortByContext();
-	const order = useOrderContext();
+	const [error, setError] = useState<string>();
 
 	useEffect(() => {
-		const getContacts = async () => {
-			setIsLoading(true);
-			setContacts(await readContacts(sortBy, order));
-			setContactsGroups(await readContactsGroups());
-			setIsLoading(false);
-		};
-
-		getContacts();
+		setIsLoading(true);
+		const data = getGroups();
+		if (typeof data === "string") {
+			setError(data);
+		}
+		setIsLoading(false);
 	}, []);
 
 	useEffect(() => {
-		const generateNewAvatars = async () => {
-			if (!contactsGroups) return;
-			setIsLoading(true);
-			const avatarPromises = contactsGroups.map(async () => {
-				const endPath = await generateRandomAvatar("avatar");
-				return `${supabaseUrl}/storage/v1/object/public/avatars/${endPath}`;
-			});
-			const avatars = await Promise.all(avatarPromises);
-			setGroupsAvatars(avatars);
-			setIsLoading(false);
-		};
+		setEditMode(currentPathLast == "edit" ? true : false);
+	}, [path]);
 
-		generateNewAvatars();
-	}, [contactsGroups]);
-
-	if (isLoading || !groupsAvatars) return <Loader />;
+	if (error) return <ErrorBox message={error} />;
+	if (groups.length < 1 || isLoading) return <Loader />;
 
 	return (
 		<>
-			<div className={style.homeLinkContainer}>
-				<Link
-					to={"contacts/all"}
-					className={style.homeLink}>
-					<div className={style.homeLinkAvatar}>
-						<img
-							src={`${supabaseUrl}/storage/v1/object/public/avatars/avatars/avatar2.png`}
-							alt='All Avatar'
-							loading='lazy'
-						/>
-					</div>
-					all
-				</Link>
-				<Link
-					to={"contacts/favourites"}
-					className={style.homeLink}>
-					<div className={style.homeLinkAvatar}>
-						<img
-							src={`${supabaseUrl}/storage/v1/object/public/avatars/avatars/avatar4.png`}
-							alt='Favourites Avatar'
-							loading='lazy'
-						/>
-					</div>
-					favourites
-				</Link>
-				{contactsGroups?.map((group, i) => (
+			<div className={`${"groups__container"} ${editMode ? editMode : null}`}>
+				{!editMode && (
 					<Link
-						key={`${i}List`}
-						to={`contacts/${group}`}
-						className={style.homeLink}>
-						<div className={style.homeLinkAvatar}>
+						to={"contacts/all"}
+						className={"groups__card"}>
+						<div className={"groups__card__avatar"}>
 							<img
-								src={groupsAvatars[i]}
-								alt={`${group} Avatar`}
+								src={`${supabaseUrl}/storage/v1/object/public/avatars/avatars/avatar4.png`}
+								alt='All Avatar'
 								loading='lazy'
 							/>
 						</div>
-						{group}
+						All
+					</Link>
+				)}
+				{groups.map((group, i) => (
+					<Link
+						key={`${i}List`}
+						to={editMode ? `${group.id}` : `contacts/${group.tag}`}
+						className={"groups__card"}>
+						<div className={"groups__card__avatar"}>
+							<img
+								src={`${supabaseUrl}/storage/v1/object/public/avatars/${group.avatar}`}
+								alt={`${group.tag} Avatar`}
+								loading='lazy'
+							/>
+						</div>
+						{group.tag}
 					</Link>
 				))}
+				{!editMode && (
+					<Link
+						to={"groups/add"}
+						className={"groups__card"}>
+						<div className={"groups__card--add"}>{AddIcon}</div>
+						Add group
+					</Link>
+				)}
 			</div>
 		</>
 	);

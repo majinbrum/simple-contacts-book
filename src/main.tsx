@@ -1,15 +1,18 @@
+// CSS
+import "./index.css";
+// React
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
-import App from "./App.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+// Components
+import App from "./App.tsx";
 import Default from "./components/Pages/Default/Default.tsx";
 import Contact from "./components/Pages/Contact/Contact.tsx";
-import SortByProvider from "./providers/SortByContext.tsx";
-import OrderProvider from "./providers/OrderContext.tsx";
-import FilterProvider from "./providers/FilterContext.tsx";
 import ContactsGroup from "./components/Pages/ContactsGroup/ContactsGroup.tsx";
-import ContactsProvider from "./providers/ContactsContext.tsx";
+import Group from "./components/Pages/Group/Group.tsx";
+// Context
+import FilterProvider from "./providers/FilterContext.tsx";
+import GroupsProvider from "./providers/GroupsContext.tsx";
 
 const router = createBrowserRouter([
 	{
@@ -21,15 +24,27 @@ const router = createBrowserRouter([
 				element: <App />,
 			},
 			{
-				path: "add",
-				element: <Contact />,
+				path: "groups/edit",
+				element: <App />,
 			},
 			{
 				path: "contacts/:group",
 				element: <ContactsGroup />,
 			},
 			{
+				path: "groups/add",
+				element: <Group />,
+			},
+			{
+				path: "groups/edit/:id",
+				element: <Group />,
+			},
+			{
 				path: "contacts/:group/:id",
+				element: <Contact />,
+			},
+			{
+				path: "contacts/add",
 				element: <Contact />,
 			},
 		],
@@ -38,15 +53,11 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
-		{/* <App /> */}
+		{/*<App />*/}
 		<FilterProvider>
-			<SortByProvider>
-				<OrderProvider>
-					<ContactsProvider>
-						<RouterProvider router={router} />
-					</ContactsProvider>
-				</OrderProvider>
-			</SortByProvider>
+			<GroupsProvider>
+				<RouterProvider router={router} />
+			</GroupsProvider>
 		</FilterProvider>
 	</StrictMode>
 );

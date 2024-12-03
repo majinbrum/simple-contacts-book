@@ -82,6 +82,65 @@ export type Database = {
         }
         Relationships: []
       }
+      contacts_duplicate: {
+        Row: {
+          avatar: string
+          email: string
+          favourite: boolean
+          id: string
+          name: string
+          phone: string
+          surname: string
+          tag: string | null
+        }
+        Insert: {
+          avatar?: string
+          email: string
+          favourite: boolean
+          id?: string
+          name: string
+          phone: string
+          surname: string
+          tag?: string | null
+        }
+        Update: {
+          avatar?: string
+          email?: string
+          favourite?: boolean
+          id?: string
+          name?: string
+          phone?: string
+          surname?: string
+          tag?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contacts_duplicate_tag_fkey"
+            columns: ["tag"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["tag"]
+          },
+        ]
+      }
+      groups: {
+        Row: {
+          avatar: string
+          id: string
+          tag: string
+        }
+        Insert: {
+          avatar?: string
+          id?: string
+          tag: string
+        }
+        Update: {
+          avatar?: string
+          id?: string
+          tag?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

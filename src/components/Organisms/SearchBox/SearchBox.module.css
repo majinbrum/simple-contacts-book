@@ -1,4 +1,4 @@
-.searchBox {
+.search__box {
 	background-color: var(--light);
 	border-radius: var(--border-radius);
 	padding: var(--space-sm);
@@ -8,7 +8,7 @@
 	gap: var(--space-sm);
 }
 
-.selectBox {
+.select__box {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	gap: var(--space-sm);

@@ -1,12 +1,15 @@
+// CSS
+import "./Default.css";
+// React
 import { Outlet } from "react-router-dom";
+// Components
 import Header from "../../Templates/Header/Header";
-import style from "./Default.module.css";
 
 const Default = () => {
 	return (
 		<>
 			<Header />
-			<main className={style.main}>
+			<main className={"main"}>
 				<Outlet />
 			</main>
 		</>

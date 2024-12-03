@@ -1,9 +1,0 @@
-.listsContainer {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-md);
-}
-
-.listsContainer.reverse {
-	flex-direction: column-reverse;
-}
