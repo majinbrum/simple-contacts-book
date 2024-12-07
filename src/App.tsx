@@ -41,7 +41,7 @@ const App = () => {
 
 	return (
 		<>
-			<div className={`${"groups__container"} ${editMode ? editMode : null}`}>
+			<div className={`${"groups__container"} ${editMode ? "editMode" : null}`}>
 				{!editMode && (
 					<Link
 						to={"contacts/all"}
